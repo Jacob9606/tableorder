@@ -1,0 +1,95 @@
+/* OrderDashboard.css */
+
+.order-dashboard {
+  padding: 2rem;
+  font-family: "Roboto", sans-serif;
+  background-color: #f7f9fa;
+}
+
+h1,
+h2 {
+  color: #2c3e50;
+}
+
+.order-filters {
+  margin-bottom: 1rem;
+}
+
+.filter-button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button.active {
+  background-color: #2980b9;
+}
+
+.filter-button:hover {
+  background-color: #2980b9;
+}
+
+.order-list {
+  margin-bottom: 2rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #dcdcdc;
+  border-radius: 0.25rem;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+}
+
+.order-item p {
+  margin: 0;
+}
+
+.button-group-inline {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button-group-inline button {
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-group-inline button:hover {
+  background-color: #2980b9;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.revenue-button,
+.profile-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.revenue-button:hover,
+.profile-button:hover {
+  background-color: #229954;
+}

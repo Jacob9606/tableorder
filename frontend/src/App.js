@@ -15,12 +15,18 @@ import Profile from "./Admin/components/Profile";
 import ManageMenu from "./Admin/components/ManageMenu";
 import AddItem from "./Admin/components/AddItem";
 import UpdateItem from "./Admin/components/UpdateItem";
+import ResetPassword from "./Admin/components/ResetPassword";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   const handleAdminLogin = () => {
     setIsAdminLoggedIn(true);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+    localStorage.removeItem("authToken"); // 토큰 삭제
   };
 
   return (
@@ -39,6 +45,7 @@ const App = () => {
         />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/dashboard"
           element={
@@ -51,7 +58,13 @@ const App = () => {
         />
         <Route
           path="/profile"
-          element={isAdminLoggedIn ? <Profile /> : <Navigate to="/admin" />}
+          element={
+            isAdminLoggedIn ? (
+              <Profile onLogout={handleAdminLogout} />
+            ) : (
+              <Navigate to="/admin" />
+            )
+          }
         />
         <Route
           path="/manage-menu"

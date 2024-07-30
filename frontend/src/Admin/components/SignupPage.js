@@ -8,24 +8,48 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [shopName, setShopName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-    // 회원가입 로직을 여기에 추가하세요 (예: 서버로 회원가입 데이터 전송)
+
     const signupData = {
       email,
       password,
       shopName,
       phoneNumber,
+      address,
     };
-    console.log(signupData); // 실제로는 이 데이터를 서버로 전송
-    alert("Signup successful");
-    navigate("/admin");
+
+    try {
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      if (response.status === 201) {
+        alert("Signup successful. Please verify your email.");
+        navigate("/AdminLoginPage");
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(`An error occurred: ${error.message}`);
+    }
   };
 
   return (
@@ -50,6 +74,17 @@ const SignupPage = () => {
             id="phone-number"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="address">Address:</label>
+          <input
+            type="text"
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             required
             className="form-input"
           />

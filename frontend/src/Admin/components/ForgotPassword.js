@@ -6,11 +6,28 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 비밀번호 재설정 로직을 여기에 추가하세요 (예: 서버로 이메일 전송)
-    alert("Password reset link sent to your email");
-    navigate("/admin");
+
+    try {
+      const response = await fetch("http://localhost:3000/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      alert("Password reset link sent to your email");
+      navigate("/admin");
+    } catch (error) {
+      console.error("Error:", error);
+      alert(`An error occurred: ${error.message}`);
+    }
   };
 
   return (

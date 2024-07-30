@@ -1,23 +1,23 @@
-/* ForgotPassword.css */
+/* Profile.css */
 
-.forgot-password-container {
+.profile-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  padding: 2rem;
   background-color: #f7f9fa;
   font-family: "Roboto", sans-serif;
 }
 
-.forgot-password-title {
+.profile-title {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 2rem;
   color: #2c3e50;
 }
 
-.forgot-password-form {
+.profile-form {
   background-color: white;
   padding: 2rem;
   border-radius: 0.25rem;
@@ -26,6 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .form-group {
@@ -45,7 +46,8 @@
   font-size: 1rem;
 }
 
-.reset-button {
+.update-button,
+.manage-menu-button {
   padding: 0.75rem;
   background-color: #3498db;
   color: white;
@@ -55,6 +57,23 @@
   transition: background-color 0.3s ease;
 }
 
-.reset-button:hover {
+.update-button:hover,
+.manage-menu-button:hover {
   background-color: #2980b9;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 1rem;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.logout-button:hover {
+  text-decoration: underline;
+  color: red;
 }

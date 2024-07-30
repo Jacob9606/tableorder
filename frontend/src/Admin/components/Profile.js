@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 
-const Profile = () => {
+const Profile = ({ onLogout }) => {
   const [shopName, setShopName] = useState("My Restaurant");
   const [email, setEmail] = useState("admin@example.com");
   const [phoneNumber, setPhoneNumber] = useState("123-456-7890");
@@ -12,6 +12,14 @@ const Profile = () => {
     e.preventDefault();
     // 프로필 업데이트 로직을 여기에 추가하세요 (예: 서버로 업데이트 데이터 전송)
     alert("Profile updated successfully");
+  };
+
+  const handleLogout = () => {
+    // 로그아웃 로직을 여기에 추가하세요 (예: 토큰 삭제, 세션 종료 등)
+    localStorage.removeItem("authToken"); // 로컬 저장소에서 토큰 제거
+    onLogout(); // 로그아웃 콜백 호출
+    alert("Logged out successfully");
+    navigate("/admin");
   };
 
   return (
@@ -60,6 +68,9 @@ const Profile = () => {
         onClick={() => navigate("/manage-menu")}
       >
         Manage Menu
+      </button>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
       </button>
     </div>
   );

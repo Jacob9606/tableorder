@@ -7,13 +7,39 @@ const AdminLoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 로그인 로직을 여기에 추가하세요 (예: 서버로 로그인 데이터 전송)
-    if (email === "admin@example.com" && password === "password") {
-      onLogin(); // 로그인 성공 시 onLogin 콜백 호출
-    } else {
-      alert("Invalid email or password");
+
+    const loginData = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      if (response.status === 200) {
+        localStorage.setItem("authToken", data.token); // 토큰을 로컬 저장소에 저장
+        onLogin(); // 로그인 성공 시 onLogin 콜백 호출
+        alert("Login successful.");
+        navigate("/order-dashboard");
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(`An error occurred: ${error.message}`);
     }
   };
 

@@ -23,11 +23,34 @@ const AddItem = () => {
     }
   };
 
-  const handleAddItem = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
-    // 아이템 추가 로직을 여기에 추가하세요 (예: 서버로 아이템 데이터 전송)
-    alert("Item added successfully");
-    navigate("/manage-menu");
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("image", image);
+
+    try {
+      const response = await fetch("http://localhost:3000/add-item", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log("Response Data:", data);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      alert("Item added successfully");
+      navigate("/manage-menu");
+    } catch (error) {
+      console.error("Error:", error);
+      alert(`An error occurred: ${error.message}`);
+    }
   };
 
   return (

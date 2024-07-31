@@ -25,6 +25,7 @@ const SignupPage = () => {
       phoneNumber,
       address,
     };
+    console.log("Signup Data:", signupData);
 
     try {
       const response = await fetch("http://localhost:3000/signup", {
@@ -36,13 +37,14 @@ const SignupPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        throw new Error(data.error || "Network response was not ok");
       }
 
       const data = await response.json();
       if (response.status === 201) {
         alert("Signup successful. Please verify your email.");
-        navigate("/AdminLoginPage");
+        navigate("/admin");
       } else {
         alert(data.error);
       }

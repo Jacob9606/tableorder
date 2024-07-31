@@ -39,43 +39,73 @@ app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 
 // API 라우트 설정
 app.post("/signup", async (req, res) => {
+  console.log("Request Body:", req.body);
   const { email, password, shopName, phoneNumber, address } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const { data, error } = await supabase.from("admin").insert([
-    {
-      email,
-      password: hashedPassword,
-      shop_name: shopName,
-      phone_number: phoneNumber,
-      address,
-      email_verified: false,
-    },
-  ]);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
+  // 유효성 검사 추가
+  if (!email || !password || !shopName || !phoneNumber || !address) {
+    return res.status(400).json({ error: "All fields are required" });
   }
 
-  const emailToken = jwt.sign({ email }, jwtSecret, { expiresIn: "1h" });
-  const emailVerificationUrl = `http://localhost:${port}/verify-email?token=${emailToken}`;
+  try {
+    // 이메일 중복 검사
+    const { data: existingUser, error: existingUserError } = await supabase
+      .from("admin")
+      .select("id")
+      .eq("email", email)
+      .single();
 
-  const mailOptions = {
-    from: emailUser,
-    to: email,
-    subject: "Email Verification",
-    text: `Please verify your email by clicking the following link: ${emailVerificationUrl}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res
-        .status(500)
-        .json({ error: "Failed to send verification email" });
+    if (existingUserError && existingUserError.code !== "PGRST116") {
+      // PGRST116은 'Row not found'를 의미합니다.
+      return res.status(500).json({ error: existingUserError.message });
     }
-    res
-      .status(201)
-      .json({ message: "Signup successful, please verify your email" });
-  });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const { data, error } = await supabase.from("admin").insert([
+      {
+        email,
+        password: hashedPassword,
+        shop_name: shopName,
+        phone_number: phoneNumber,
+        address,
+        email_verified: false,
+      },
+    ]);
+
+    if (error) {
+      console.error("Supabase Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    const emailToken = jwt.sign({ email }, jwtSecret, { expiresIn: "1h" });
+    const emailVerificationUrl = `http://localhost:${port}/verify-email?token=${emailToken}`;
+
+    const mailOptions = {
+      from: emailUser,
+      to: email,
+      subject: "Email Verification",
+      text: `Please verify your email by clicking the following link: ${emailVerificationUrl}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Email Error:", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to send verification email" });
+      }
+      res
+        .status(201)
+        .json({ message: "Signup successful, please verify your email" });
+    });
+  } catch (error) {
+    console.error("Signup Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.get("/verify-email", async (req, res) => {

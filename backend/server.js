@@ -216,7 +216,6 @@ app.post("/reset-password", async (req, res) => {
   }
 });
 
-// 여기에서 이미지 업로드 및 아이템 추가를 위한 라우트를 정의합니다
 app.post("/add-item", upload.single("image"), async (req, res) => {
   const { name, price, description } = req.body;
   const image = req.file;

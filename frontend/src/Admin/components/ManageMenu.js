@@ -1,30 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ManageMenu.css";
 
-const initialMenuItems = [
-  {
-    id: 1,
-    name: "Bruschetta",
-    price: 7.99,
-    description: "Delicious grilled bread",
-    image: "/images/bruschetta.jpg",
-  },
-  {
-    id: 2,
-    name: "Margherita Pizza",
-    price: 12.99,
-    description: "Classic pizza with tomato and cheese",
-    image: "/images/pizza.jpg",
-  },
-];
-
 const ManageMenu = () => {
-  const [menuItems, setMenuItems] = React.useState(initialMenuItems);
+  const [menuItems, setMenuItems] = useState([]);
+  const [loadedImages, setLoadedImages] = useState({});
   const navigate = useNavigate();
 
-  const handleDeleteMenuItem = (itemId) => {
-    setMenuItems(menuItems.filter((item) => item.id !== itemId));
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/items", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch items");
+        }
+
+        const data = await response.json();
+        console.log("Fetched items:", data);
+        setMenuItems(data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
+
+  const handleDeleteMenuItem = async (itemId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/items/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete item");
+      }
+
+      setMenuItems(menuItems.filter((item) => item.id !== itemId));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
+  const handleImageLoad = (id) => {
+    setLoadedImages((prev) => ({ ...prev, [id]: true }));
+  };
+
+  const handleImageError = (id) => {
+    setLoadedImages((prev) => ({ ...prev, [id]: false }));
   };
 
   return (
@@ -34,9 +66,16 @@ const ManageMenu = () => {
         Add Item
       </button>
       <div className="menu-list">
-        {menuItems.map((item) => (
-          <div key={item.id} className="menu-item">
-            <img src={item.image} alt={item.name} className="menu-item-image" />
+        {menuItems.map((item, index) => (
+          <div key={item.id || index} className="menu-item">
+            <img
+              src={item.image_url}
+              alt={item.name}
+              className="menu-item-image"
+              onLoad={() => handleImageLoad(item.id)}
+              onError={() => handleImageError(item.id)}
+            />
+            {!loadedImages[item.id] && <p>Loading image...</p>}
             <div className="menu-item-details">
               <p>
                 {item.name} - ${item.price.toFixed(2)}

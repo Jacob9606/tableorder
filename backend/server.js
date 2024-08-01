@@ -6,6 +6,8 @@ const { createClient } = require("@supabase/supabase-js");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+const WebSocket = require("ws");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 const app = express();
@@ -17,6 +19,22 @@ const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASS;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+// CORS 설정 추가
+const whitelist = ["http://localhost:3000", "http://localhost:3002"];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+};
+
+app.use(cors(corsOptions));
 
 // Multer 설정
 const storage = multer.memoryStorage();
@@ -30,12 +48,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// 프론트엔드 빌드 파일 제공 설정
-app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 
 // API 라우트 설정
 app.post("/signup", async (req, res) => {
@@ -54,7 +68,7 @@ app.post("/signup", async (req, res) => {
       .select("id")
       .eq("email", email)
       .single();
-
+    ``;
     if (existingUserError && existingUserError.code !== "PGRST116") {
       // PGRST116은 'Row not found'를 의미합니다.
       return res.status(500).json({ error: existingUserError.message });
@@ -224,10 +238,11 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
   console.log("Request File:", req.file);
 
   try {
-    // Supabase Storage에 이미지 업로드
+    const uniqueName = `${Date.now()}-${image.originalname}`;
+
     const { data: storageData, error: storageError } = await supabase.storage
       .from("items")
-      .upload(`public/${image.originalname}`, image.buffer, {
+      .upload(uniqueName, image.buffer, {
         cacheControl: "3600",
         upsert: false,
         contentType: image.mimetype,
@@ -238,13 +253,8 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
       return res.status(400).json({ error: storageError.message });
     }
 
-    const imageUrl = `${
-      supabase.storage
-        .from("items")
-        .getPublicUrl(`public/${image.originalname}`).data.publicUrl
-    }`;
+    const imageUrl = `https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/${uniqueName}`;
 
-    // Supabase 데이터베이스에 아이템 데이터 삽입
     const { data: itemData, error: itemError } = await supabase
       .from("items")
       .insert([
@@ -268,6 +278,25 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
   }
 });
 
+app.get("/items", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("items")
+      .select("name, price, description, image_url");
+    if (error) {
+      console.error("Supabase Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to fetch items" });
+  }
+});
+
+// 프론트엔드 빌드 파일 제공 설정
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+
 // 나머지 모든 요청은 React 앱이 처리하도록 설정
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
@@ -275,4 +304,21 @@ app.get("*", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+
+// WebSocket 설정 추가
+const wss = new WebSocket.Server({ port: 3001 });
+
+wss.on("connection", function connection(ws) {
+  console.log("A new client connected");
+  ws.on("message", function incoming(message) {
+    console.log("received: %s", message);
+    ws.send(`Echo: ${message}`);
+  });
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+
+  ws.send("Welcome to the WebSocket server!");
 });

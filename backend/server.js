@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
@@ -21,7 +21,7 @@ const emailPass = process.env.EMAIL_PASS;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // CORS 설정 추가
-const whitelist = ["http://localhost:3000", "http://localhost:3002"];
+const whitelist = ["http://localhost:3000", "http://localhost:3002", "http://localhost:3001"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -78,8 +78,10 @@ app.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const { data, error } = await supabase.from("admin").insert([
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    const { data, error } = supabase.from("admin").insert([
       {
         email,
         password: hashedPassword,
@@ -89,6 +91,7 @@ app.post("/signup", async (req, res) => {
         email_verified: false,
       },
     ]);
+    
 
     if (error) {
       console.error("Supabase Error:", error);
@@ -214,7 +217,9 @@ app.post("/reset-password", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
     const { data, error } = await supabase
       .from("admin")
       .update({ password: hashedPassword })

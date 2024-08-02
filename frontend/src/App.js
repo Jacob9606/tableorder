@@ -78,6 +78,7 @@ const App = () => {
           path="/update-item/:id"
           element={isAdminLoggedIn ? <UpdateItem /> : <Navigate to="/admin" />}
         />
+
         <Route path="/" element={<Navigate to="/admin" />} />
       </Routes>
     </Router>

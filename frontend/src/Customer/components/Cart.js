@@ -1,3 +1,5 @@
+// Cart.jsx
+
 import React from "react";
 import "../styles/Cart.css";
 
@@ -16,7 +18,7 @@ const Cart = ({ cart, removeFromCart, navigateToMenu, placeOrder }) => {
           {cart.map((item) => (
             <div key={item.id} className="cart-item">
               <img
-                src={item.image}
+                src={item.image_url}
                 alt={item.name}
                 className="cart-item-image"
               />

@@ -1,23 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 
 const Profile = ({ onLogout }) => {
-  const [shopName, setShopName] = useState("My Restaurant");
-  const [email, setEmail] = useState("admin@example.com");
-  const [phoneNumber, setPhoneNumber] = useState("123-456-7890");
+  const [shopName, setShopName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const navigate = useNavigate();
 
-  const handleUpdateProfile = (e) => {
+  // 프로필 데이터를 서버에서 가져옵니다.
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // 인증 헤더 추가
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const data = await response.json();
+        setShopName(data.shop_name);
+        setEmail(data.email);
+        setPhoneNumber(data.phone_number);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    // 프로필 업데이트 로직을 여기에 추가하세요 (예: 서버로 업데이트 데이터 전송)
-    alert("Profile updated successfully");
+
+    try {
+      const response = await fetch("http://localhost:3000/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // 인증 헤더 추가
+        },
+        body: JSON.stringify({ email, shopName, phoneNumber }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      alert("Profile updated successfully");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert(`An error occurred: ${error.message}`);
+    }
   };
 
   const handleLogout = () => {
-    // 로그아웃 로직을 여기에 추가하세요 (예: 토큰 삭제, 세션 종료 등)
-    localStorage.removeItem("authToken"); // 로컬 저장소에서 토큰 제거
-    onLogout(); // 로그아웃 콜백 호출
+    localStorage.removeItem("authToken");
+    onLogout();
     alert("Logged out successfully");
     navigate("/admin");
   };

@@ -4,11 +4,11 @@ import "../styles/UpdateItem.css";
 
 const UpdateItem = () => {
   const location = useLocation();
-  const { item } = location.state || {}; // location.state가 없을 경우 빈 객체로 기본값 설정
+  const { item, id } = location.state || {}; // id를 올바르게 액세스
   const [name, setName] = useState(item ? item.name : "");
   const [price, setPrice] = useState(item ? item.price : "");
   const [description, setDescription] = useState(item ? item.description : "");
-  const [image, setImage] = useState(null); // Changed from item.image
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -19,7 +19,7 @@ const UpdateItem = () => {
   const handleUpdateItem = async (e) => {
     e.preventDefault();
 
-    if (!item) {
+    if (!id) {
       alert("No item data available");
       return;
     }
@@ -33,7 +33,7 @@ const UpdateItem = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/items/${item.id}`, {
+      const response = await fetch(`http://localhost:3000/items/${id}`, {
         method: "PUT",
         body: formData,
       });

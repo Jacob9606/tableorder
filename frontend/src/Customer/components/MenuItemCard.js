@@ -3,7 +3,7 @@ import "../styles/MenuOrderPage.css";
 
 const MenuItemCard = ({ item, addToCart }) => (
   <div className="menu-item">
-    <img src={item.image} alt={item.name} />
+    <img src={item.image_url} alt={item.name} />
     <div className="menu-item-content">
       <h2>{item.name}</h2>
       <p>${item.price.toFixed(2)}</p>

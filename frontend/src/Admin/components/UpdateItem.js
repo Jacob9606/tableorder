@@ -4,29 +4,52 @@ import "../styles/UpdateItem.css";
 
 const UpdateItem = () => {
   const location = useLocation();
-  const { item } = location.state;
-  const [name, setName] = useState(item.name);
-  const [price, setPrice] = useState(item.price);
-  const [description, setDescription] = useState(item.description);
-  const [image, setImage] = useState(item.image);
+  const { item } = location.state || {}; // location.state가 없을 경우 빈 객체로 기본값 설정
+  const [name, setName] = useState(item ? item.name : "");
+  const [price, setPrice] = useState(item ? item.price : "");
+  const [description, setDescription] = useState(item ? item.description : "");
+  const [image, setImage] = useState(null); // Changed from item.image
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setImage(file);
   };
 
-  const handleUpdateItem = (e) => {
+  const handleUpdateItem = async (e) => {
     e.preventDefault();
-    // 아이템 업데이트 로직을 여기에 추가하세요 (예: 서버로 업데이트 데이터 전송)
-    alert("Item updated successfully");
-    navigate("/manage-menu");
+
+    if (!item) {
+      alert("No item data available");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("description", description);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/items/${item.id}`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update item");
+      }
+
+      const data = await response.json();
+      console.log("Update successful:", data);
+      alert("Item updated successfully");
+      navigate("/manage-menu");
+    } catch (error) {
+      console.error("Error updating item:", error);
+      alert(`An error occurred: ${error.message}`);
+    }
   };
 
   return (
@@ -76,7 +99,11 @@ const UpdateItem = () => {
             className="form-input"
           />
           {image && (
-            <img src={image} alt="Item Preview" className="image-preview" />
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Item Preview"
+              className="image-preview"
+            />
           )}
         </div>
         <button type="submit" className="update-button">

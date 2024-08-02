@@ -294,6 +294,57 @@ app.get("/items", async (req, res) => {
   }
 });
 
+// Update item
+app.put("/items/:id", upload.single("image"), async (req, res) => {
+  const itemId = req.params.id; // URL에서 ID 추출
+  const { name, price, description } = req.body;
+  const image = req.file;
+
+  console.log("Received update request for item ID:", itemId);
+  console.log("Received data:", { name, price, description });
+
+  try {
+    const updateData = {
+      name,
+      price,
+      description,
+    };
+
+    if (image) {
+      const uniqueName = `${Date.now()}-${image.originalname}`;
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from("items")
+        .upload(uniqueName, image.buffer, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: image.mimetype,
+        });
+
+      if (storageError) {
+        console.error("Storage Error:", storageError);
+        return res.status(400).json({ error: storageError.message });
+      }
+
+      updateData.image_url = `https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/${uniqueName}`;
+    }
+
+    const { data, error } = await supabase
+      .from("items")
+      .update(updateData)
+      .eq("id", itemId);
+
+    if (error) {
+      console.error("Update Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: "Item updated successfully", data });
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).json({ error: "Failed to update item" });
+  }
+});
+
 // 프론트엔드 빌드 파일 제공 설정
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 

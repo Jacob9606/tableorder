@@ -299,6 +299,25 @@ app.get("/items", async (req, res) => {
   }
 });
 
+app.post("/cart", async(req, res) => {
+  const items = req.body;
+  console.log(items)
+  const { data, error } = await supabase.from("orders").insert(
+    items.map(item => ({
+      item: item.name,
+      price: item.price,
+      status: "pending"
+    }))
+  );
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.status(200).json({ data });
+
+});
+
 // 프론트엔드 빌드 파일 제공 설정
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
 

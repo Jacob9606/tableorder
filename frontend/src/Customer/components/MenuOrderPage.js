@@ -1,58 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CategoryButton from "./CategoryButton";
 import MenuItemCard from "./MenuItemCard";
 import CartButton from "./CartButton";
 import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 
-const menuItems = {
-  appetizers: [
-    {
-      id: 1,
-      name: "Bruschetta",
-      price: 7.99,
-      image: "/api/placeholder/300/200",
-    },
-    {
-      id: 2,
-      name: "Mozzarella Sticks",
-      price: 6.99,
-      image: "/api/placeholder/300/200",
-    },
-  ],
-  mainCourses: [
-    {
-      id: 3,
-      name: "Margherita Pizza",
-      price: 12.99,
-      image: "/api/placeholder/300/200",
-    },
-    {
-      id: 4,
-      name: "Spaghetti Carbonara",
-      price: 14.99,
-      image: "/api/placeholder/300/200",
-    },
-  ],
-  desserts: [
-    { id: 5, name: "Tiramisu", price: 6.99, image: "/api/placeholder/300/200" },
-    { id: 6, name: "Cannoli", price: 5.99, image: "/api/placeholder/300/200" },
-  ],
-};
+
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("appetizers");
   const [cart, setCart] = useState([]);
   const [viewingCart, setViewingCart] = useState(false);
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    const fetchMenuItems = async() => {
+      try {
+        const response = await fetch("http://localhost:3000/items", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch items");
+        }
+
+        const data = await response.json();
+        console.log("Fetched items:", data);
+        setMenuItems(data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+    fetchMenuItems();
+  }, []);
 
   const addToCart = (item) => {
-    if (!cart.some((cartItem) => cartItem.id === item.id)) {
-      setCart([...cart, item]);
-    }
-  };
+    // Update the cart state
+    setCart(prevCart => {
+        const updatedCart = [...prevCart, item];
+        localStorage.setItem("items", JSON.stringify(updatedCart)); // Save the updated cart to local storage
+        
+        return updatedCart; // Return the updated cart to set the state
+    });
+};
 
   const removeFromCart = (itemId) => {
-    setCart(cart.filter((item) => item.id !== itemId));
+    const items = JSON.parse(localStorage.getItem("items"))
+    
   };
 
   const navigateToCart = () => {
@@ -63,17 +60,25 @@ const MenuOrderPage = () => {
     setViewingCart(false);
   };
 
-  const placeOrder = () => {
-    // 주문 로직을 여기에 추가하세요 (예: 서버로 주문 데이터 전송)
-    alert("Order placed successfully!");
-    setCart([]); // 주문 후 카트를 비웁니다.
+  const placeOrder = async () => {
+    const items = localStorage.getItem("items")
+    console.log(typeof(items))
+
+    const response = await fetch("http://localhost:3000/cart", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(items)
+    })
+
+    localStorage.removeItem("items")
     setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
   };
 
   if (viewingCart) {
     return (
       <Cart
-        cart={cart}
         removeFromCart={removeFromCart}
         navigateToMenu={navigateToMenu}
         placeOrder={placeOrder}
@@ -95,7 +100,7 @@ const MenuOrderPage = () => {
         ))}
       </div>
       <div className="menu-grid">
-        {menuItems[selectedCategory].map((item) => (
+        {menuItems.map((item) => (
           <MenuItemCard key={item.id} item={item} addToCart={addToCart} />
         ))}
       </div>

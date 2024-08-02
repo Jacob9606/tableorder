@@ -16,6 +16,7 @@ import ManageMenu from "./Admin/components/ManageMenu";
 import AddItem from "./Admin/components/AddItem";
 import UpdateItem from "./Admin/components/UpdateItem";
 import ResetPassword from "./Admin/components/ResetPassword";
+import Cart from "./Customer/components/Cart";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
@@ -77,6 +78,10 @@ const App = () => {
         <Route
           path="/update-item/:id"
           element={isAdminLoggedIn ? <UpdateItem /> : <Navigate to="/admin" />}
+        />
+        <Route
+          path="/cart"
+          element={<Cart />}
         />
         <Route path="/" element={<Navigate to="/admin" />} />
       </Routes>

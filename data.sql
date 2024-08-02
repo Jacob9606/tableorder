@@ -167,8 +167,8 @@ COPY "public"."Cart" ("id", "items", "total_price", "restaurant_id", "created_at
 --
 
 COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "address", "email_verified") FROM stdin;
-1	snm9606@naver.com	$2b$10$CU.herkYzrXp0JSHXJFOo.b2TG8TM364MACgTAd2wNnhV/ubCOCIW	illnara	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
 21	snm9606@gmail.com	$2b$10$267zK6v34cBZeZCOQNUU8OLIFx9nzFqLMeBapomfoppU5063Y20uS	Jacob	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
+1	snm9606@naver.com	$2b$10$9EOLceIb3offiPcJkqjQh.iSHCUzZ/DozpEBOCd4YyCFyDOtHUcae	illnara	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
 \.
 
 
@@ -177,8 +177,7 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 --
 
 COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at") FROM stdin;
-13	Chicken	24.00	Whole chicken	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722505379415-Korean Chciken.jpg	2024-08-01 09:43:03.845606+00
-14	Bibimbap	12.00	delicious	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722506488098-bibimbap.jpeg	2024-08-01 10:01:32.524923+00
+13	Chicken	24.00	Whole chicken	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722571846027-Korean Chciken.jpg	2024-08-01 09:43:03.845606+00
 \.
 
 
@@ -206,9 +205,8 @@ COPY "public"."menuitems" ("id", "name", "price", "description", "imageurl") FRO
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."orders" ("id", "tableid", "item", "price", "status", "createdat") FROM stdin;
-8b494522-c9ff-4139-8e8e-de6b3ef98938	9406d8a5-d375-47be-93fb-b9b51887a953	["Meat bibimbap", "Kimchi pancake"]	50.9	pending	\N
-68c62e88-c4ad-4a46-92e2-09638cca14fc	5299c1f8-eaa9-4528-a781-7b795233d64b	["Galbijim", "Sogogi beoseot jeongol", "Gamjatang"]	115.5	pending	\N
+COPY "public"."orders" ("item", "price", "status", "id") FROM stdin;
+Chicken	24	pending	4
 \.
 
 
@@ -231,6 +229,8 @@ d4297c0d-b1ab-4d2f-93eb-fac104e1da47	items	1722505379415-Korean Chciken.jpg	\N	2
 a1c2359c-4224-433c-b48e-dee26dd3d58d	items	1722506488098-bibimbap.jpeg	\N	2024-08-01 10:01:32.333774+00	2024-08-01 10:01:32.333774+00	2024-08-01 10:01:32.333774+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-01T10:01:33.000Z", "contentLength": 9844, "httpStatusCode": 200}	9e8253bc-a0cf-4e73-b3b2-fb19eef0cb05	\N
 842f2d2b-a30a-49e0-92cf-d9567941414c	items	1722519258848-Korean Chciken.jpg	\N	2024-08-01 13:34:22.593002+00	2024-08-01 13:34:22.593002+00	2024-08-01 13:34:22.593002+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-01T13:34:23.000Z", "contentLength": 161628, "httpStatusCode": 200}	64f57ca4-6b94-4e82-91c0-1ce7a4b91cdd	\N
 5c4d1e0a-9f60-424f-8bb6-3b4ada63ec2c	items	1722519520648-Korean Chciken.jpg	\N	2024-08-01 13:38:44.092005+00	2024-08-01 13:38:44.092005+00	2024-08-01 13:38:44.092005+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-01T13:38:44.000Z", "contentLength": 161628, "httpStatusCode": 200}	8059865a-defe-463e-a2b4-ff48d91d3621	\N
+62909e14-0acf-4949-92d5-e00189106cd9	items	1722570514416-Korean Chciken.jpg	\N	2024-08-02 03:48:38.504186+00	2024-08-02 03:48:38.504186+00	2024-08-02 03:48:38.504186+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-02T03:48:39.000Z", "contentLength": 161628, "httpStatusCode": 200}	751dbdca-c01b-4ffc-b2fc-f0b644e7cd02	\N
+f0b5df67-4528-43d3-95be-37246f2a8661	items	1722571846027-Korean Chciken.jpg	\N	2024-08-02 04:10:49.859095+00	2024-08-02 04:10:49.859095+00	2024-08-02 04:10:49.859095+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-02T04:10:50.000Z", "contentLength": 161628, "httpStatusCode": 200}	da0e99c3-b1de-4539-9ea4-feeb56c400c6	\N
 \.
 
 
@@ -291,6 +291,13 @@ SELECT pg_catalog.setval('"public"."admin_id_seq"', 21, true);
 --
 
 SELECT pg_catalog.setval('"public"."items_id_seq"', 14, true);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 4, true);
 
 
 --

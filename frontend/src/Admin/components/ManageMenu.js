@@ -83,12 +83,16 @@ const ManageMenu = () => {
               <p>{item.description}</p>
               <button
                 className="update-button"
-                onClick={() =>
-                  navigate(`/update-item/${item.id}`, { state: { item } })
+                onClick={
+                  () =>
+                    navigate(`/update-item/${item.id}`, {
+                      state: { item, id: item.id },
+                    }) // 올바른 아이템 데이터를 전달
                 }
               >
                 Update
               </button>
+
               <button
                 onClick={() => handleDeleteMenuItem(item.id)}
                 className="delete-button"

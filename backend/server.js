@@ -290,7 +290,7 @@ app.get("/items", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("items")
-      .select("name, price, description, image_url");
+      .select("id, name, price, description, image_url");
     if (error) {
       console.error("Supabase Error:", error);
       return res.status(400).json({ error: error.message });
@@ -299,6 +299,129 @@ app.get("/items", async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Failed to fetch items" });
+  }
+});
+
+// Update item
+app.put("/items/:id", upload.single("image"), async (req, res) => {
+  const itemId = req.params.id; // URL에서 ID 추출
+  const { name, price, description } = req.body;
+  const image = req.file;
+
+  console.log("Received update request for item ID:", itemId);
+  console.log("Received data:", { name, price, description });
+
+  if (!itemId) {
+    return res.status(400).json({ error: "Item ID is required" });
+  }
+
+  try {
+    const updateData = {
+      name,
+      price,
+      description,
+    };
+
+    if (image) {
+      const uniqueName = `${Date.now()}-${image.originalname}`;
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from("items")
+        .upload(uniqueName, image.buffer, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: image.mimetype,
+        });
+
+      if (storageError) {
+        console.error("Storage Error:", storageError);
+        return res.status(400).json({ error: storageError.message });
+      }
+
+      updateData.image_url = `https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/${uniqueName}`;
+    }
+
+    const { data, error } = await supabase
+      .from("items")
+      .update(updateData)
+      .eq("id", itemId);
+
+    if (error) {
+      console.error("Update Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: "Item updated successfully", data });
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).json({ error: "Failed to update item" });
+  }
+});
+
+// Delete Item
+app.delete("/items/:id", async (req, res) => {
+  const itemId = req.params.id;
+
+  try {
+    const { data, error } = await supabase
+      .from("items")
+      .delete()
+      .eq("id", itemId);
+
+    if (error) {
+      console.error("Delete Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: "Item deleted successfully", data });
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    res.status(500).json({ error: "Failed to delete item" });
+  }
+});
+
+// Get Profile
+app.get("/profile", async (req, res) => {
+  const userId = req.user.id; // 현재 사용자 ID를 가져오는 로직을 추가하세요
+
+  try {
+    const { data, error } = await supabase
+      .from("admin")
+      .select("shop_name, email, phone_number")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching profile:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to fetch profile" });
+  }
+});
+
+// Update Profile
+app.put("/profile", async (req, res) => {
+  const { email, shopName, phoneNumber } = req.body;
+  const userId = req.user.id; // 사용자의 ID를 가져오는 로직을 추가하세요
+
+  try {
+    const { data, error } = await supabase
+      .from("admin")
+      .update({ email, shop_name: shopName, phone_number: phoneNumber })
+      .eq("id", userId);
+
+    if (error) {
+      console.error("Profile Update Error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ error: "Failed to update profile" });
   }
 });
 

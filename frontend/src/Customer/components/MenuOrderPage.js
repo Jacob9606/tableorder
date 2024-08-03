@@ -5,8 +5,6 @@ import CartButton from "./CartButton";
 import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 
-
-
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("appetizers");
   const [cart, setCart] = useState([]);
@@ -35,21 +33,25 @@ const MenuOrderPage = () => {
       }
     };
     fetchMenuItems();
+
+    const storedCart = JSON.parse(localStorage.getItem("items")) || [];
+    setCart(storedCart);
   }, []);
 
   const addToCart = (item) => {
-    // Update the cart state
-    setCart(prevCart => {
-        const updatedCart = [...prevCart, item];
-        localStorage.setItem("items", JSON.stringify(updatedCart)); // Save the updated cart to local storage
-        
-        return updatedCart; // Return the updated cart to set the state
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, item];
+      localStorage.setItem("items", JSON.stringify(updatedCart)); // Save the updated cart to local storage
+      return updatedCart;
     });
-};
+  };
 
   const removeFromCart = (itemId) => {
-    const items = JSON.parse(localStorage.getItem("items"))
-    
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter((item) => item.id !== itemId);
+      localStorage.setItem("items", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
   };
 
   const navigateToCart = () => {
@@ -61,19 +63,29 @@ const MenuOrderPage = () => {
   };
 
   const placeOrder = async () => {
-    const items = localStorage.getItem("items")
-    console.log(typeof(items))
+    const items = cart;
+    console.log("Placing order:", items);
 
-    const response = await fetch("http://localhost:3000/cart", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(items)
-    })
+    try {
+      const response = await fetch("http://localhost:3000/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(items),
+      });
 
-    localStorage.removeItem("items")
-    setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      localStorage.removeItem("items");
+      setCart([]);
+      setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
+      console.log("Order placed successfully");
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
   };
 
   if (viewingCart) {

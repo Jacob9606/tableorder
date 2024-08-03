@@ -1,0 +1,42 @@
+name: Supa-backup
+
+on:
+  push:
+    branches: [Jacob]
+  pull_request:
+    branches: [Jacob]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight
+
+jobs:
+  run_db_backup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }} # Ensure this is set correctly in GitHub Secrets
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: Jacob
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Backup roles
+        run: supabase db dump --db-url "$SUPABASE_URL" -f roles.sql --role-only
+
+      - name: Backup schema
+        run: supabase db dump --db-url "$SUPABASE_URL" -f schema.sql
+
+      - name: Backup data
+        run: supabase db dump --db-url "$SUPABASE_URL" -f data.sql --data-only --use-copy
+
+      - name: Auto-commit backup
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Supabase backup

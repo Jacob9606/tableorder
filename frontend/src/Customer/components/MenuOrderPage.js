@@ -1,5 +1,3 @@
-// MenuOrderPage.jsx
-
 import React, { useState, useEffect } from "react";
 import CategoryButton from "./CategoryButton";
 import MenuItemCard from "./MenuItemCard";
@@ -14,7 +12,7 @@ const MenuOrderPage = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    const fetchMenuItems = async () => {
+    const fetchMenuItems = async() => {
       try {
         const response = await fetch("http://localhost:3000/items", {
           method: "GET",
@@ -34,7 +32,6 @@ const MenuOrderPage = () => {
         console.error("Error fetching items:", error);
       }
     };
-
     fetchMenuItems();
 
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
@@ -94,7 +91,6 @@ const MenuOrderPage = () => {
   if (viewingCart) {
     return (
       <Cart
-        cart={cart}
         removeFromCart={removeFromCart}
         navigateToMenu={navigateToMenu}
         placeOrder={placeOrder}

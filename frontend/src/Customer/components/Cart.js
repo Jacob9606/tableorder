@@ -3,10 +3,12 @@
 import React from "react";
 import "../styles/Cart.css";
 
-const Cart = ({ cart, removeFromCart, navigateToMenu, placeOrder }) => {
+const Cart = ({ removeFromCart, navigateToMenu, placeOrder }) => {
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price, 0).toFixed(2);
   };
+  const cart = JSON.parse(localStorage.getItem("items"))
+  const total = 0;
 
   return (
     <div className="cart-container">
@@ -14,7 +16,7 @@ const Cart = ({ cart, removeFromCart, navigateToMenu, placeOrder }) => {
       {cart.length === 0 ? (
         <p className="cart-empty">Your cart is empty.</p>
       ) : (
-        <div className="cart-items">
+        <div className="cart-items">         
           {cart.map((item) => (
             <div key={item.id} className="cart-item">
               <img

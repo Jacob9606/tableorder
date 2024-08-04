@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
@@ -21,7 +21,11 @@ const emailPass = process.env.EMAIL_PASS;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // CORS 설정 추가
-const whitelist = ["http://localhost:3000", "http://localhost:3002"];
+const whitelist = [
+  "http://localhost:3000",
+  "http://localhost:3002",
+  "http://localhost:3001",
+];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -51,7 +55,6 @@ const transporter = nodemailer.createTransport({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API 라우트 설정
 app.post("/signup", async (req, res) => {
   console.log("Request Body:", req.body);
   const { email, password, shopName, phoneNumber, address } = req.body;
@@ -68,7 +71,7 @@ app.post("/signup", async (req, res) => {
       .select("id")
       .eq("email", email)
       .single();
-    ``;
+
     if (existingUserError && existingUserError.code !== "PGRST116") {
       // PGRST116은 'Row not found'를 의미합니다.
       return res.status(500).json({ error: existingUserError.message });
@@ -78,7 +81,10 @@ app.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Ensure await is used here
     const { data, error } = await supabase.from("admin").insert([
       {
         email,
@@ -91,7 +97,7 @@ app.post("/signup", async (req, res) => {
     ]);
 
     if (error) {
-      console.error("Supabase Error:", error);
+      console.error("Supabase Insert Error:", error);
       return res.status(400).json({ error: error.message });
     }
 
@@ -105,9 +111,9 @@ app.post("/signup", async (req, res) => {
       text: `Please verify your email by clicking the following link: ${emailVerificationUrl}`,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Email Error:", error);
+    transporter.sendMail(mailOptions, (emailError, info) => {
+      if (emailError) {
+        console.error("Email Error:", emailError);
         return res
           .status(500)
           .json({ error: "Failed to send verification email" });
@@ -214,7 +220,9 @@ app.post("/reset-password", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const { data, error } = await supabase
       .from("admin")
       .update({ password: hashedPassword })

@@ -371,28 +371,28 @@ app.delete("/items/:id", async (req, res) => {
   }
 });
 
-// Get Profile
-app.get("/profile", async (req, res) => {
-  const userId = req.user.id; // 현재 사용자 ID를 가져오는 로직을 추가하세요
+// // Get Profile
+// app.get("/profile", async (req, res) => {
+//   const userId = req.user.id; // 현재 사용자 ID를 가져오는 로직을 추가하세요
 
-  try {
-    const { data, error } = await supabase
-      .from("admin")
-      .select("shop_name, email, phone_number")
-      .eq("id", userId)
-      .single();
+//   try {
+//     const { data, error } = await supabase
+//       .from("admin")
+//       .select("shop_name, email, phone_number")
+//       .eq("id", userId)
+//       .single();
 
-    if (error) {
-      console.error("Error fetching profile:", error);
-      return res.status(400).json({ error: error.message });
-    }
+//     if (error) {
+//       console.error("Error fetching profile:", error);
+//       return res.status(400).json({ error: error.message });
+//     }
 
-    res.status(200).json(data);
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Failed to fetch profile" });
-  }
-});
+//     res.status(200).json(data);
+//   } catch (error) {
+//     console.error("Error:", error);
+//     res.status(500).json({ error: "Failed to fetch profile" });
+//   }
+// });
 
 // Update Profile
 app.put("/profile", async (req, res) => {

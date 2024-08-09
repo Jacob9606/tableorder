@@ -6,12 +6,13 @@ import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 
 const MenuOrderPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("appetizers");
+  const [selectedCategory, setSelectedCategory] = useState("Breakfast");
   const [cart, setCart] = useState([]);
   const [viewingCart, setViewingCart] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
+    // Get the menu items from the database
     const fetchMenuItems = async() => {
       try {
         const response = await fetch("http://localhost:3000/items", {
@@ -34,6 +35,7 @@ const MenuOrderPage = () => {
     };
     fetchMenuItems();
 
+    // Restore cart state from localStorage
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
     setCart(storedCart);
   }, []);
@@ -79,9 +81,10 @@ const MenuOrderPage = () => {
         throw new Error("Failed to place order");
       }
 
+      setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
       localStorage.removeItem("items");
       setCart([]);
-      setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
+      
       console.log("Order placed successfully");
     } catch (error) {
       console.error("Error placing order:", error);
@@ -98,21 +101,34 @@ const MenuOrderPage = () => {
     );
   }
 
+  const uniqueCategories = [...new Set(menuItems.map(item => item.category))];
+  const filteredItems = menuItems.filter(
+    (item) => item.category === selectedCategory
+  );
+
   return (
     <div className="container">
       <h1 className="title">Menu</h1>
       <div className="category-buttons">
-        {Object.keys(menuItems).map((category) => (
+        {/* {Object.keys(menuItems).map((category) => (
           <CategoryButton
             key={category}
             category={category}
             isSelected={selectedCategory === category}
             onClick={setSelectedCategory}
           />
+        ))} */}
+        {uniqueCategories.map((category) => (
+          <CategoryButton
+            key={category}
+            category={category}
+            isSelected={selectedCategory === category}
+            onClick={() => setSelectedCategory(category)}
+          />
         ))}
       </div>
       <div className="menu-grid">
-        {menuItems.map((item) => (
+        {filteredItems.map((item) => (
           <MenuItemCard key={item.id} item={item} addToCart={addToCart} />
         ))}
       </div>

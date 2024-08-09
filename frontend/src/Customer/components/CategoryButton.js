@@ -6,7 +6,7 @@ const CategoryButton = ({ category, isSelected, onClick }) => (
     onClick={() => onClick(category)}
     className={`category-button ${isSelected ? "selected" : ""}`}
   >
-    {category.charAt(0).toUpperCase() + category.slice(1)}
+    {category}
   </button>
 );
 

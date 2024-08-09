@@ -91,6 +91,12 @@ const MenuOrderPage = () => {
     }
   };
 
+  function isCart({ length }) {
+    if (length > 0) {
+      return <CartButton cartLength={cart.length} onClick={navigateToCart} />
+    }
+  }
+
   if (viewingCart) {
     return (
       <Cart
@@ -110,14 +116,6 @@ const MenuOrderPage = () => {
     <div className="container">
       <h1 className="title">Menu</h1>
       <div className="category-buttons">
-        {/* {Object.keys(menuItems).map((category) => (
-          <CategoryButton
-            key={category}
-            category={category}
-            isSelected={selectedCategory === category}
-            onClick={setSelectedCategory}
-          />
-        ))} */}
         {uniqueCategories.map((category) => (
           <CategoryButton
             key={category}
@@ -132,7 +130,7 @@ const MenuOrderPage = () => {
           <MenuItemCard key={item.id} item={item} addToCart={addToCart} />
         ))}
       </div>
-      <CartButton cartLength={cart.length} onClick={navigateToCart} />
+      {isCart({ length: cart.length })}
     </div>
   );
 };

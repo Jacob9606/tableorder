@@ -169,7 +169,7 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 --
 
 COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at") FROM stdin;
-15	bibimbap	33.00	delicious	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722579470836-bibimbap.jpeg	2024-08-02 06:17:54.675574+00
+16	Chicken	33.00	Whole chicken	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722730911193-Korean Chciken.jpg	2024-08-04 00:21:54.848221+00
 \.
 
 
@@ -216,6 +216,9 @@ a1c2359c-4224-433c-b48e-dee26dd3d58d	items	1722506488098-bibimbap.jpeg	\N	2024-0
 f0b5df67-4528-43d3-95be-37246f2a8661	items	1722571846027-Korean Chciken.jpg	\N	2024-08-02 04:10:49.859095+00	2024-08-02 04:10:49.859095+00	2024-08-02 04:10:49.859095+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-02T04:10:50.000Z", "contentLength": 161628, "httpStatusCode": 200}	da0e99c3-b1de-4539-9ea4-feeb56c400c6	\N
 cfd47594-449e-4a38-a3af-ce85bdb50ec0	items	1722579457838-Korean Chciken.jpg	\N	2024-08-02 06:17:42.004566+00	2024-08-02 06:17:42.004566+00	2024-08-02 06:17:42.004566+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-02T06:17:42.000Z", "contentLength": 161628, "httpStatusCode": 200}	687a0bc7-d54c-4b4e-972e-48559cc9c70e	\N
 4781a5d5-373d-4153-8f6c-2ebb55a48fb8	items	1722579470836-bibimbap.jpeg	\N	2024-08-02 06:17:54.554021+00	2024-08-02 06:17:54.554021+00	2024-08-02 06:17:54.554021+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-02T06:17:55.000Z", "contentLength": 9844, "httpStatusCode": 200}	8ba02809-c85d-49db-9d96-0f3e56d2092a	\N
+2ebd001b-dae1-4a81-9541-ae07c32e5f50	items	1722654027465-bibimbap.jpeg	\N	2024-08-03 03:00:28.0243+00	2024-08-03 03:00:28.0243+00	2024-08-03 03:00:28.0243+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-03T03:00:28.000Z", "contentLength": 9844, "httpStatusCode": 200}	1237d999-350a-4bd3-a5e6-456c059a7b35	\N
+ad2f9c65-1893-41f6-9fe9-bf8621e4746b	items	1722730900502-bibimbap.jpeg	\N	2024-08-04 00:21:43.741269+00	2024-08-04 00:21:43.741269+00	2024-08-04 00:21:43.741269+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:21:44.000Z", "contentLength": 9844, "httpStatusCode": 200}	ae3377fe-b190-4347-bcbb-691aa59cb53c	\N
+1740afe1-9899-47dc-a82d-7ae8217cb0cd	items	1722730911193-Korean Chciken.jpg	\N	2024-08-04 00:21:54.694236+00	2024-08-04 00:21:54.694236+00	2024-08-04 00:21:54.694236+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:21:55.000Z", "contentLength": 161628, "httpStatusCode": 200}	f92cea4f-69b4-46ae-b3f1-8ea9416aa6ff	\N
 \.
 
 
@@ -268,7 +271,7 @@ SELECT pg_catalog.setval('"public"."admin_id_seq"', 27, true);
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."items_id_seq"', 15, true);
+SELECT pg_catalog.setval('"public"."items_id_seq"', 16, true);
 
 
 --

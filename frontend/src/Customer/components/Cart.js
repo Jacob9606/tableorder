@@ -1,14 +1,13 @@
-// Cart.jsx
-
 import React from "react";
 import "../styles/Cart.css";
 
 const Cart = ({ removeFromCart, navigateToMenu, placeOrder }) => {
+  const cart = JSON.parse(localStorage.getItem("items"));
+  console.log("Cart:", cart)
   const calculateTotal = () => {
     return cart.reduce((total, item) => total + item.price, 0).toFixed(2);
   };
-  const cart = JSON.parse(localStorage.getItem("items"))
-  const total = 0;
+
 
   return (
     <div className="cart-container">

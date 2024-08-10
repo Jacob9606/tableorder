@@ -290,7 +290,7 @@ app.get("/items", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("items")
-      .select("id, name, price, description, image_url");
+      .select("id, name, price, description, image_url, category");
     if (error) {
       console.error("Supabase Error:", error);
       return res.status(400).json({ error: error.message });

@@ -6,7 +6,7 @@ import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 
 const MenuOrderPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Breakfast");
+  const [selectedCategory, setSelectedCategory] = useState("Main");
   const [cart, setCart] = useState([]);
   const [viewingCart, setViewingCart] = useState(false);
   const [menuItems, setMenuItems] = useState([]);

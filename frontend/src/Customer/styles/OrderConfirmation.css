@@ -1,0 +1,73 @@
+/* OrderConfirmation.css */
+
+.order-confirmation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Viewport height에 맞춰 중앙 정렬 */
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.order-confirmation-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.order-confirmation-message {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.order-details {
+  width: 100%;
+  max-width: 600px; /* 최대 너비 설정 */
+  margin-bottom: 20px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-item-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.order-item-details {
+  flex-grow: 1;
+}
+
+.order-total {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.back-to-menu-button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.back-to-menu-button:hover {
+  background-color: #45a049;
+}

@@ -379,42 +379,46 @@ app.delete("/items/:id", async (req, res) => {
   }
 });
 
-// // Get Profile
-// app.get("/profile", async (req, res) => {
-//   const userId = req.user.id; // 현재 사용자 ID를 가져오는 로직을 추가하세요
+// Get Profile
+app.get("/profile", async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1]; // Bearer token
 
-//   try {
-//     const { data, error } = await supabase
-//       .from("admin")
-//       .select("shop_name, email, phone_number")
-//       .eq("id", userId)
-//       .single();
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    const { data: user, error } = await supabase
+      .from("admin")
+      .select("shop_name, email, phone_number")
+      .eq("id", decoded.id)
+      .single();
 
-//     if (error) {
-//       console.error("Error fetching profile:", error);
-//       return res.status(400).json({ error: error.message });
-//     }
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
 
-//     res.status(200).json(data);
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).json({ error: "Failed to fetch profile" });
-//   }
-// });
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ error: "Failed to fetch profile" });
+  }
+});
 
 // Update Profile
 app.put("/profile", async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1]; // Bearer token
   const { email, shopName, phoneNumber } = req.body;
-  const userId = req.user.id; // 사용자의 ID를 가져오는 로직을 추가하세요
 
   try {
+    const decoded = jwt.verify(token, jwtSecret);
     const { data, error } = await supabase
       .from("admin")
-      .update({ email, shop_name: shopName, phone_number: phoneNumber })
-      .eq("id", userId);
+      .update({
+        shop_name: shopName,
+        email,
+        phone_number: phoneNumber,
+      })
+      .eq("id", decoded.id);
 
     if (error) {
-      console.error("Profile Update Error:", error);
       return res.status(400).json({ error: error.message });
     }
 
@@ -441,6 +445,50 @@ app.post("/cart", async (req, res) => {
   }
 
   res.status(200).json({ data });
+});
+
+//Get Orders
+app.get("/orders", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("id, item, price, status, created_at");
+
+    if (error) {
+      console.error("Error fetching orders from database:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    console.log("Orders fetched from database:", data);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
+});
+
+// Update Order status
+app.put("/orders/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error updating order status in database:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    console.log("Order status updated:", data);
+    res.status(200).json({ message: "Order status updated successfully" });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ error: "Failed to update order status" });
+  }
 });
 
 // 프론트엔드 빌드 파일 제공 설정

@@ -85,7 +85,7 @@ ebff57db-0893-4a25-bb1b-5dade505bc31	2024-07-29 00:20:40.77501+00	2024-07-29 00:
 -- Data for Name: mfa_factors; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-COPY "auth"."mfa_factors" ("id", "user_id", "friendly_name", "factor_type", "status", "created_at", "updated_at", "secret") FROM stdin;
+COPY "auth"."mfa_factors" ("id", "user_id", "friendly_name", "factor_type", "status", "created_at", "updated_at", "secret", "phone", "last_challenged_at") FROM stdin;
 \.
 
 
@@ -93,7 +93,7 @@ COPY "auth"."mfa_factors" ("id", "user_id", "friendly_name", "factor_type", "sta
 -- Data for Name: mfa_challenges; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-COPY "auth"."mfa_challenges" ("id", "factor_id", "created_at", "verified_at", "ip_address") FROM stdin;
+COPY "auth"."mfa_challenges" ("id", "factor_id", "created_at", "verified_at", "ip_address", "otp_code") FROM stdin;
 \.
 
 
@@ -159,8 +159,8 @@ COPY "pgsodium"."key" ("id", "status", "created", "expires", "key_type", "key_id
 --
 
 COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "address", "email_verified") FROM stdin;
-25	snm9606@gmail.com	$2b$10$iQHOhm9/Ag4.E01xdIwANuIdStX52wUuDjEnjwjWKv2VSqQd.SA8a	Jacob	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
 27	timothyjt96@gmail.com	$2a$10$O1YjVXReP.5xD.25wcGM3ePf8lW7llu0iIM8JyksDAG1atTk5D.ny	Hanok	12345678	Northfields	t
+25	snm9606@gmail.com	$2b$10$iQHOhm9/Ag4.E01xdIwANuIdStX52wUuDjEnjwjWKv2VSqQd.SA8a	Jacob	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
 \.
 
 
@@ -168,18 +168,20 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at") FROM stdin;
-16	Chicken	33.00	Whole chicken	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1722730911193-Korean Chciken.jpg	2024-08-04 00:21:54.848221+00
-\.
-
-
---
--- Data for Name: menuitems; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "public"."menuitems" ("id", "name", "price", "description", "imageurl") FROM stdin;
-696f3bda-866c-4a91-83b4-8b542bff9709	Meat Bibimbap	13		\N
-9c09065f-9eda-40f5-bbef-a1ddec352e05	Half & half chicken	25.5	\N	\N
+COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at", "category") FROM stdin;
+31	Kimchi Pancake	18.00	Fermented kimchi with wheat flour	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF_yzbcxJNZVFlpTX5TzxOjitoFmU6rqbQQw&s	2024-08-10 01:45:16.775857+00	Entree
+32	Corn Cheese	14.00	Seasoned loose corn covered with seared cheese	https://www.beyondkimchee.com/wp-content/uploads/2023/11/korean-corn-cheese-thumbnail.jpg	2024-08-10 01:45:57.410963+00	Entree
+33	Steamed eggs	15.00	Steamed eggs in hot pot	https://drivemehungry.com/wp-content/uploads/2021/10/korean-steamed-eggs-gyeran-jjim-13.jpg	2024-08-10 01:46:33.567805+00	Entree
+21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share
+22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share
+23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share
+24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share
+25	Gonggi-Bap	3.00	A bowl of rice	https://www.tcmworld.org/wp-content/uploads/2016/08/shutterstock_462377029.jpg	2024-08-10 01:37:07.758861+00	Extra
+26	Udong-Sari	3.00	Thick white noodles. Udon	https://www.justonecookbook.com/wp-content/uploads/2024/03/Kake-Udon-7549-I-1.jpg	2024-08-10 01:38:25.78798+00	Extra
+27	Dolsot Bibimbap	20.00	Rice with assorted vegetables in hot stone pot	https://futuredish.com/wp-content/uploads/2017/12/Dolsot-Bibimbap-500x375.jpg	2024-08-10 01:39:54.439522+00	Main
+28	Kimchi-Jjigae	19.00	Fermented kimchi stew with rice	https://www.koreanbapsang.com/wp-content/uploads/2014/03/DSC5897-2.jpg	2024-08-10 01:40:55.951526+00	Main
+29	Samgyetang	25.00	Ginseng chicken soup with rice.	https://twoplaidaprons.com/wp-content/uploads/2023/08/side-shot-of-samgyetang-cooked-thumbnail.jpg	2024-08-10 01:42:51.303779+00	Main
+30	Vege Gunmandu 6pc	10.00	Vegetable fried dumpling 6pc	https://www.maangchi.com/wp-content/uploads/2008/05/fried-dumplings.jpg	2024-08-10 01:44:24.195777+00	Entree
 \.
 
 
@@ -187,9 +189,10 @@ COPY "public"."menuitems" ("id", "name", "price", "description", "imageurl") FRO
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."orders" ("item", "price", "status", "id") FROM stdin;
-Chicken	24	pending	4
-bibimbap	33	pending	5
+COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number") FROM stdin;
+Kimchi Pancake	18	pending	36	2024-08-10 04:26:54.381275	\N
+Corn Cheese	14	pending	37	2024-08-10 04:26:54.381275	\N
+Dolsot Bibimbap	20	pending	38	2024-08-10 04:26:54.381275	\N
 \.
 
 
@@ -219,6 +222,11 @@ cfd47594-449e-4a38-a3af-ce85bdb50ec0	items	1722579457838-Korean Chciken.jpg	\N	2
 2ebd001b-dae1-4a81-9541-ae07c32e5f50	items	1722654027465-bibimbap.jpeg	\N	2024-08-03 03:00:28.0243+00	2024-08-03 03:00:28.0243+00	2024-08-03 03:00:28.0243+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-03T03:00:28.000Z", "contentLength": 9844, "httpStatusCode": 200}	1237d999-350a-4bd3-a5e6-456c059a7b35	\N
 ad2f9c65-1893-41f6-9fe9-bf8621e4746b	items	1722730900502-bibimbap.jpeg	\N	2024-08-04 00:21:43.741269+00	2024-08-04 00:21:43.741269+00	2024-08-04 00:21:43.741269+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:21:44.000Z", "contentLength": 9844, "httpStatusCode": 200}	ae3377fe-b190-4347-bcbb-691aa59cb53c	\N
 1740afe1-9899-47dc-a82d-7ae8217cb0cd	items	1722730911193-Korean Chciken.jpg	\N	2024-08-04 00:21:54.694236+00	2024-08-04 00:21:54.694236+00	2024-08-04 00:21:54.694236+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:21:55.000Z", "contentLength": 161628, "httpStatusCode": 200}	f92cea4f-69b4-46ae-b3f1-8ea9416aa6ff	\N
+3a38b327-64c8-464e-aa3c-6febc47bef96	items	1722732073124-Korean Chciken.jpg	\N	2024-08-04 00:41:16.628737+00	2024-08-04 00:41:16.628737+00	2024-08-04 00:41:16.628737+00	{"eTag": "\\"fab9fb318e94e3a1861f6e88c4c8e4d5\\"", "size": 161628, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:41:17.000Z", "contentLength": 161628, "httpStatusCode": 200}	16fed8fe-e199-4678-997d-d28d46f6f407	\N
+2fa0c345-be33-49df-ba18-73e878265ea5	items	1722732083757-bibimbap.jpeg	\N	2024-08-04 00:41:26.898273+00	2024-08-04 00:41:26.898273+00	2024-08-04 00:41:26.898273+00	{"eTag": "\\"f869534070bf48d41d954b41dad4d0ee\\"", "size": 9844, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-04T00:41:27.000Z", "contentLength": 9844, "httpStatusCode": 200}	c081d5f1-3ce7-4c92-9fad-fe802b56b0d0	\N
+121b00b8-bc0e-4359-8cb7-d1cecd365ac3	items	1722991228725-aneta.jpg	\N	2024-08-07 00:40:29.195298+00	2024-08-07 00:40:29.195298+00	2024-08-07 00:40:29.195298+00	{"eTag": "\\"3f242a2d8fd17780cdc5c72216d7c220\\"", "size": 125309, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-07T00:40:30.000Z", "contentLength": 125309, "httpStatusCode": 200}	aa6372c4-02ff-4c2b-b6c3-7d6e8c837d5e	\N
+896ce288-1af8-454c-9afd-d3a2c57a8f28	items	1723077073745-mastautim.jpg	\N	2024-08-08 00:31:14.094357+00	2024-08-08 00:31:14.094357+00	2024-08-08 00:31:14.094357+00	{"eTag": "\\"480434b1bde1feb1074830ae13cd713e\\"", "size": 40358, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-08T00:31:15.000Z", "contentLength": 40358, "httpStatusCode": 200}	d45e099e-1a43-44b7-bff1-4abf366868b3	\N
+8a8580b8-c82d-481b-8f5c-2f5f4b7ac313	items	1723077131959-Screenshot 2024-07-04 at 14.45.30.png	\N	2024-08-08 00:32:12.79968+00	2024-08-08 00:32:12.79968+00	2024-08-08 00:32:12.79968+00	{"eTag": "\\"993d0f72d4284a2453cd2bd9f971db81\\"", "size": 3471174, "mimetype": "image/png", "cacheControl": "max-age=3600", "lastModified": "2024-08-08T00:32:13.000Z", "contentLength": 3471174, "httpStatusCode": 200}	e99ad088-4e96-4f2f-b0b6-a66353710ff1	\N
 \.
 
 
@@ -264,21 +272,21 @@ SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
 -- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."admin_id_seq"', 27, true);
+SELECT pg_catalog.setval('"public"."admin_id_seq"', 28, true);
 
 
 --
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."items_id_seq"', 16, true);
+SELECT pg_catalog.setval('"public"."items_id_seq"', 33, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 5, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 38, true);
 
 
 --

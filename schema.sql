@@ -60,7 +60,8 @@ CREATE TABLE IF NOT EXISTS "public"."items" (
     "price" numeric(10,2) NOT NULL,
     "description" "text" NOT NULL,
     "image_url" "text" NOT NULL,
-    "created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+    "created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    "category" "text"
 );
 
 ALTER TABLE "public"."items" OWNER TO "postgres";
@@ -77,21 +78,13 @@ ALTER TABLE "public"."items_id_seq" OWNER TO "postgres";
 
 ALTER SEQUENCE "public"."items_id_seq" OWNED BY "public"."items"."id";
 
-CREATE TABLE IF NOT EXISTS "public"."menuitems" (
-    "id" "uuid" DEFAULT "extensions"."uuid_generate_v4"(),
-    "name" "text",
-    "price" double precision,
-    "description" "text",
-    "imageurl" "text"
-);
-
-ALTER TABLE "public"."menuitems" OWNER TO "postgres";
-
 CREATE TABLE IF NOT EXISTS "public"."orders" (
     "item" "text",
     "price" double precision,
     "status" "text" DEFAULT 'pending'::"text",
-    "id" integer NOT NULL
+    "id" integer NOT NULL,
+    "created_at" timestamp without time zone DEFAULT "now"(),
+    "customer_number" integer
 );
 
 ALTER TABLE "public"."orders" OWNER TO "postgres";
@@ -149,10 +142,6 @@ GRANT ALL ON TABLE "public"."items" TO "service_role";
 GRANT ALL ON SEQUENCE "public"."items_id_seq" TO "anon";
 GRANT ALL ON SEQUENCE "public"."items_id_seq" TO "authenticated";
 GRANT ALL ON SEQUENCE "public"."items_id_seq" TO "service_role";
-
-GRANT ALL ON TABLE "public"."menuitems" TO "anon";
-GRANT ALL ON TABLE "public"."menuitems" TO "authenticated";
-GRANT ALL ON TABLE "public"."menuitems" TO "service_role";
 
 GRANT ALL ON TABLE "public"."orders" TO "anon";
 GRANT ALL ON TABLE "public"."orders" TO "authenticated";

@@ -196,6 +196,8 @@ Dolsot Bibimbap	20	preparation	38	2024-08-10 04:26:54.381275	\N
 Corn Cheese	14	rejected	39	2024-08-10 05:21:04.872477	\N
 Udong-Sari	3	pending	40	2024-08-10 05:33:48.805622	\N
 Gonggi-Bap	3	pending	41	2024-08-10 05:33:48.805622	\N
+Kimchi Pancake	18	pending	42	2024-08-10 11:39:04.01623	\N
+Corn Cheese	14	pending	43	2024-08-10 11:39:04.01623	\N
 \.
 
 
@@ -289,7 +291,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 33, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 41, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 43, true);
 
 
 --

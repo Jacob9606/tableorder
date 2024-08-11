@@ -25,6 +25,7 @@ const whitelist = [
   "http://localhost:3000",
   "http://localhost:3002",
   "http://localhost:3001",
+  "https://jacob9606.github.io",
 ];
 const corsOptions = {
   origin: (origin, callback) => {

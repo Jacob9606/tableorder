@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
-    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "deploy": "gh-pages -d frontend/build"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

@@ -33,7 +33,7 @@ const AdminLoginPage = ({ onLogin }) => {
         localStorage.setItem("authToken", data.token); // 토큰을 로컬 저장소에 저장
         onLogin(); // 로그인 성공 시 onLogin 콜백 호출
         alert("Login successful.");
-        navigate("/order-dashboard");
+        navigate("/dashboard");
       } else {
         alert(data.error);
       }

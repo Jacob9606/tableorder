@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminLoginPage.css";
+import servemelogo from "../../servemelogo.png";
 
 const AdminLoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -45,6 +46,8 @@ const AdminLoginPage = ({ onLogin }) => {
 
   return (
     <div className="login-container">
+      <img src={servemelogo} alt="ServeMe Logo" className="login-logo" />
+      {/* 이미지 추가 */}
       <h1 className="login-title">Admin Login</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">

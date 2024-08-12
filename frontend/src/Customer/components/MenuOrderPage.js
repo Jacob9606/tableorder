@@ -4,6 +4,7 @@ import MenuItemCard from "./MenuItemCard";
 import CartButton from "./CartButton";
 import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
+import servemelogo from "../../servemelogo.png";
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main");
@@ -12,8 +13,7 @@ const MenuOrderPage = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    // Get the menu items from the database
-    const fetchMenuItems = async() => {
+    const fetchMenuItems = async () => {
       try {
         const response = await fetch("http://localhost:3000/items", {
           method: "GET",
@@ -35,7 +35,6 @@ const MenuOrderPage = () => {
     };
     fetchMenuItems();
 
-    // Restore cart state from localStorage
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
     setCart(storedCart);
   }, []);
@@ -43,7 +42,7 @@ const MenuOrderPage = () => {
   const addToCart = (item) => {
     setCart((prevCart) => {
       const updatedCart = [...prevCart, item];
-      localStorage.setItem("items", JSON.stringify(updatedCart)); // Save the updated cart to local storage
+      localStorage.setItem("items", JSON.stringify(updatedCart));
       return updatedCart;
     });
   };
@@ -81,10 +80,10 @@ const MenuOrderPage = () => {
         throw new Error("Failed to place order");
       }
 
-      setViewingCart(false); // 메뉴 페이지로 돌아갑니다.
+      setViewingCart(false);
       localStorage.removeItem("items");
       setCart([]);
-      
+
       console.log("Order placed successfully");
     } catch (error) {
       console.error("Error placing order:", error);
@@ -93,7 +92,7 @@ const MenuOrderPage = () => {
 
   function isCart({ length }) {
     if (length > 0) {
-      return <CartButton cartLength={cart.length} onClick={navigateToCart} />
+      return <CartButton cartLength={cart.length} onClick={navigateToCart} />;
     }
   }
 
@@ -107,13 +106,16 @@ const MenuOrderPage = () => {
     );
   }
 
-  const uniqueCategories = [...new Set(menuItems.map(item => item.category))];
+  const uniqueCategories = [...new Set(menuItems.map((item) => item.category))];
   const filteredItems = menuItems.filter(
     (item) => item.category === selectedCategory
   );
 
   return (
     <div className="container">
+      <div className="logo-container">
+        <img src={servemelogo} alt="Serve Me Logo" className="logo" />
+      </div>
       <h1 className="title">Menu</h1>
       <div className="category-buttons">
         {uniqueCategories.map((category) => (

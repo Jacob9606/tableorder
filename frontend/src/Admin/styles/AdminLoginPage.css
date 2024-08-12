@@ -70,3 +70,9 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
+.login-logo {
+  width: 300px;
+  height: auto;
+  margin-bottom: -8rem;
+}

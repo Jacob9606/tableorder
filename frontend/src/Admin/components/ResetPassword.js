@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/ResetPassword.css";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../../config";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");

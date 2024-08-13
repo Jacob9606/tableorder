@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/SignupPage.css";
+import { BASE_URL } from "../../../../config";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ const SignupPage = () => {
     console.log("Signup Data:", signupData);
 
     try {
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch(`${BASE_URL}signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

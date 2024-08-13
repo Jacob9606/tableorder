@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ManageMenu.css";
+import { BASE_URL } from "../../../../config";
 
 const ManageMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -10,7 +11,7 @@ const ManageMenu = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://localhost:3000/items", {
+        const response = await fetch(`${BASE_URL}items`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -34,7 +35,7 @@ const ManageMenu = () => {
 
   const handleDeleteMenuItem = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:3000/items/${itemId}`, {
+      const response = await fetch(`${BASE_URL}items/${itemId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

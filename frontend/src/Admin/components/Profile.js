@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
+import { BASE_URL } from "../../../../config";
 
 const Profile = ({ onLogout }) => {
   const [shopName, setShopName] = useState("");
@@ -12,7 +13,7 @@ const Profile = ({ onLogout }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/profile", {
+        const response = await fetch(`${BASE_URL}profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +41,7 @@ const Profile = ({ onLogout }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/profile", {
+      const response = await fetch(`${BASE_URL}profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

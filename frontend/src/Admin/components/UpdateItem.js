@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/UpdateItem.css";
+import { BASE_URL } from "../../../../config";
 
 const UpdateItem = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ const UpdateItem = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/items/${id}`, {
+      const response = await fetch(`${BASE_URL}items/${id}`, {
         method: "PUT",
         body: formData,
       });

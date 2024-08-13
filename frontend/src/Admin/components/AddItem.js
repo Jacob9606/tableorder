@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AddItem.css";
+import { BASE_URL } from "../../../../config";
 
 const AddItem = () => {
   const [name, setName] = useState("");
@@ -33,7 +34,7 @@ const AddItem = () => {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:3000/add-item", {
+      const response = await fetch(`${BASE_URL}add-item`, {
         method: "POST",
         body: formData,
       });

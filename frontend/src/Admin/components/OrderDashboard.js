@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/OrderDashboard.css";
+import { BASE_URL } from "../../../../config";
 
 const OrderDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -10,7 +11,7 @@ const OrderDashboard = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:3000/orders", {
+        const response = await fetch(`${BASE_URL}orders`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +64,7 @@ const OrderDashboard = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      const response = await fetch(`http://localhost:3000/orders/${orderId}`, {
+      const response = await fetch(`${BASE_URL}orders/${orderId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

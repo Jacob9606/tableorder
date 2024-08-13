@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminLoginPage.css";
 import servemelogo from "../../servemelogo.png";
+import { BASE_URL } from "../../../../config";
 
 const AdminLoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const AdminLoginPage = ({ onLogin }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${BASE_URL}login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

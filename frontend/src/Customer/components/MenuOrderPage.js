@@ -5,6 +5,7 @@ import CartButton from "./CartButton";
 import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 import servemelogo from "../../servemelogo.png";
+import { BASE_URL } from "../../../../config";
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main");
@@ -15,7 +16,7 @@ const MenuOrderPage = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://localhost:3000/items", {
+        const response = await fetch(`${BASE_URL}items`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +69,7 @@ const MenuOrderPage = () => {
     console.log("Placing order:", items);
 
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch(`${BASE_URL}cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

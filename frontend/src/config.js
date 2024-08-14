@@ -1,1 +1,4 @@
-export const BASE_URL = "https://serve-me-70c148e5be60.herokuapp.com/#/";
+// frontend/src/config.js
+
+export const BASE_URL =
+  process.env.REACT_APP_BASE_URL || "http://localhost:3000/";

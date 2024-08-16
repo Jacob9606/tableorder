@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ForgotPassword.css";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../config";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminLoginPage.css";
 import servemelogo from "../../servemelogo.png";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../config";
 
 const AdminLoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");

@@ -5,7 +5,7 @@ import CartButton from "./CartButton";
 import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 import servemelogo from "../../servemelogo.png";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../config";
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main");

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
-import { BASE_URL } from "../../../../config";
+import { BASE_URL } from "../config";
+
 
 const Profile = ({ onLogout }) => {
   const [shopName, setShopName] = useState("");

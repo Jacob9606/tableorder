@@ -22,5 +22,9 @@
   },
   "devDependencies": {
     "gh-pages": "^6.1.1"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   }
 }

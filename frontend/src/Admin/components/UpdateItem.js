@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/UpdateItem.css";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../../config";
 
 const UpdateItem = () => {
   const location = useLocation();

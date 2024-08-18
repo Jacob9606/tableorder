@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/SignupPage.css";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../../config";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");

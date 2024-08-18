@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/OrderDashboard.css";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../../config";
 
 const OrderDashboard = () => {
   const [orders, setOrders] = useState([]);

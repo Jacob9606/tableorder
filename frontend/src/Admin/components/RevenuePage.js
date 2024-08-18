@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/RevenuePage.css";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../../config";
 
 const initialOrders = [
   {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { BASE_URL } from "../../config";
 import MenuOrderPage from "./Customer/components/MenuOrderPage";
 import AdminLoginPage from "./Admin/components/AdminLoginPage";
 import OrderDashboard from "./Admin/components/OrderDashboard";
@@ -24,90 +23,60 @@ const App = () => {
 
   const handleAdminLogout = () => {
     setIsAdminLoggedIn(false);
-    localStorage.removeItem("authToken"); // 토큰 삭제
+    localStorage.removeItem("authToken");
   };
 
   return (
     <Routes>
-      <Route path={`${BASE_URL}menu`} element={<MenuOrderPage />} />
+      <Route path="/menu" element={<MenuOrderPage />} />
       <Route
-        path={`${BASE_URL}admin`}
+        path="/admin"
         element={
           isAdminLoggedIn ? (
-            <Navigate to={`${BASE_URL}dashboard`} />
+            <Navigate to="/dashboard" />
           ) : (
             <AdminLoginPage onLogin={handleAdminLogin} />
           )
         }
       />
-      <Route path={`${BASE_URL}signup`} element={<SignupPage />} />
-      <Route path={`${BASE_URL}forgot-password`} element={<ForgotPassword />} />
-      <Route path={`${BASE_URL}reset-password`} element={<ResetPassword />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route
-        path={`${BASE_URL}dashboard`}
+        path="/dashboard"
         element={
-          isAdminLoggedIn ? (
-            <OrderDashboard />
-          ) : (
-            <Navigate to={`${BASE_URL}admin`} />
-          )
+          isAdminLoggedIn ? <OrderDashboard /> : <Navigate to="/admin" />
         }
       />
       <Route
-        path={`${BASE_URL}revenue`}
-        element={
-          isAdminLoggedIn ? (
-            <RevenuePage />
-          ) : (
-            <Navigate to={`${BASE_URL}admin`} />
-          )
-        }
+        path="/revenue"
+        element={isAdminLoggedIn ? <RevenuePage /> : <Navigate to="/admin" />}
       />
       <Route
-        path={`${BASE_URL}profile`}
+        path="/profile"
         element={
           isAdminLoggedIn ? (
             <Profile onLogout={handleAdminLogout} />
           ) : (
-            <Navigate to={`${BASE_URL}admin`} />
+            <Navigate to="/admin" />
           )
         }
       />
       <Route
-        path={`${BASE_URL}manage-menu`}
-        element={
-          isAdminLoggedIn ? (
-            <ManageMenu />
-          ) : (
-            <Navigate to={`${BASE_URL}admin`} />
-          )
-        }
+        path="/manage-menu"
+        element={isAdminLoggedIn ? <ManageMenu /> : <Navigate to="/admin" />}
       />
       <Route
-        path={`${BASE_URL}add-item`}
-        element={
-          isAdminLoggedIn ? <AddItem /> : <Navigate to={`${BASE_URL}admin`} />
-        }
+        path="/add-item"
+        element={isAdminLoggedIn ? <AddItem /> : <Navigate to="/admin" />}
       />
       <Route
-        path={`${BASE_URL}update-item/:id`}
-        element={
-          isAdminLoggedIn ? (
-            <UpdateItem />
-          ) : (
-            <Navigate to={`${BASE_URL}admin`} />
-          )
-        }
+        path="/update-item/:id"
+        element={isAdminLoggedIn ? <UpdateItem /> : <Navigate to="/admin" />}
       />
-      <Route path={`${BASE_URL}cart`} element={<Cart />} />
-      <Route
-        path={`${BASE_URL}order-confirmation`}
-        element={<OrderConfirmation />}
-      />
-      <Route
-        path={`${BASE_URL}`}
-        element={<Navigate to={`${BASE_URL}admin`} />}
-      />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/order-confirmation" element={<OrderConfirmation />} />
+      <Route path="/" element={<Navigate to="/admin" />} />
     </Routes>
   );
 };

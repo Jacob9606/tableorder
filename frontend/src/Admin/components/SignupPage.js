@@ -29,6 +29,7 @@ const SignupPage = () => {
     console.log("Signup Data:", signupData);
 
     try {
+      console.log("Sending request to:", `${BASE_URL}signup`);
       const response = await fetch(`${BASE_URL}signup`, {
         method: "POST",
         headers: {
@@ -37,12 +38,16 @@ const SignupPage = () => {
         body: JSON.stringify(signupData),
       });
 
+      console.log("Response Status:", response.status);
+      console.log("Response OK:", response.ok);
+
+      const data = await response.json();
+      console.log("Response Data:", data);
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || "Network response was not ok");
       }
 
-      const data = await response.json();
       if (response.status === 201) {
         alert("Signup successful. Please verify your email.");
         navigate("/admin");

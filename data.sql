@@ -160,7 +160,7 @@ COPY "pgsodium"."key" ("id", "status", "created", "expires", "key_type", "key_id
 
 COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "address", "email_verified") FROM stdin;
 27	timothyjt96@gmail.com	$2a$10$O1YjVXReP.5xD.25wcGM3ePf8lW7llu0iIM8JyksDAG1atTk5D.ny	Hanok	12345678	Northfields	t
-25	snm9606@gmail.com	$2b$10$iQHOhm9/Ag4.E01xdIwANuIdStX52wUuDjEnjwjWKv2VSqQd.SA8a	Jacob	0414989606	Unit 2/6 Daisy StFairy Meadow NSW 2519, Australia	t
+30	snm9606@naver.com	$2a$10$gEzcJAIn9oXyiK/6blxQ1eWy/uXQZ745K2c/pO4m2gr8WVCogOwUK	Illnara	0414989606	fairy meadow	t
 \.
 
 
@@ -190,16 +190,7 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number") FROM stdin;
-Kimchi Pancake	18	preparation	36	2024-08-10 04:26:54.381275	\N
-Dolsot Bibimbap	20	preparation	38	2024-08-10 04:26:54.381275	\N
-Corn Cheese	14	rejected	39	2024-08-10 05:21:04.872477	\N
-Gonggi-Bap	3	pending	41	2024-08-10 05:33:48.805622	\N
-Kimchi Pancake	18	pending	42	2024-08-10 11:39:04.01623	\N
-Corn Cheese	14	pending	43	2024-08-10 11:39:04.01623	\N
-Kimchi Pancake	18	pending	44	2024-08-11 03:33:27.920017	\N
-Corn Cheese	14	pending	45	2024-08-11 03:33:27.920017	\N
-Corn Cheese	14	completed	37	2024-08-10 04:26:54.381275	\N
-Udong-Sari	3	rejected	40	2024-08-10 05:33:48.805622	\N
+Dolsot Bibimbap	20	pending	48	2024-08-18 07:10:42.267166	\N
 \.
 
 
@@ -279,7 +270,7 @@ SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
 -- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."admin_id_seq"', 28, true);
+SELECT pg_catalog.setval('"public"."admin_id_seq"', 30, true);
 
 
 --
@@ -293,7 +284,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 33, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 45, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 48, true);
 
 
 --

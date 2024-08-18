@@ -26,12 +26,14 @@ const whitelist = [
   "http://localhost:3002",
   "http://localhost:3001",
   "https://jacob9606.github.io",
+  "https://serve-me-70c148e5be60.herokuapp.com", // Heroku app domain
 ];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
+      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error("Not allowed by CORS"));
     }
   },

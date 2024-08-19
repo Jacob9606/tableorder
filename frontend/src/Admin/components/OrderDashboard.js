@@ -38,12 +38,18 @@ const OrderDashboard = () => {
     const ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com");
 
     ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log("Received WebSocket message:", message);
+      try {
+        // WebSocket 메시지가 JSON 형식인지 확인 후 파싱
+        const message = JSON.parse(event.data);
+        console.log("Received WebSocket message:", message);
 
-      if (message.type === "new_order") {
-        // 새 주문이 들어오면 주문 목록에 추가
-        setOrders((prevOrders) => [...prevOrders, ...message.data]);
+        if (message.type === "new_order") {
+          // 새 주문이 들어오면 주문 목록에 추가
+          setOrders((prevOrders) => [...prevOrders, ...message.data]);
+        }
+      } catch (error) {
+        console.error("Failed to parse WebSocket message as JSON:", event.data);
+        // JSON이 아닌 문자열 메시지 처리
       }
     };
 

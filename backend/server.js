@@ -39,7 +39,7 @@ wss.on("connection", function connection(ws) {
     console.log("Client disconnected");
   });
 
-  ws.send("Welcome to the WebSocket server!");
+  ws.send(JSON.stringify({ message: "Welcome to the WebSocket server!" }));
 });
 
 // CORS 설정 추가

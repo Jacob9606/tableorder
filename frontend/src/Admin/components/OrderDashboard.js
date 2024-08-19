@@ -39,11 +39,10 @@ const OrderDashboard = () => {
 
     ws.onmessage = (event) => {
       try {
-        // WebSocket 메시지가 JSON 형식인지 확인 후 파싱
         const message = JSON.parse(event.data);
         console.log("Received WebSocket message:", message);
 
-        if (message.type === "new_order") {
+        if (message.type === "new_order" && Array.isArray(message.data)) {
           // 새 주문이 들어오면 주문 목록에 추가
           setOrders((prevOrders) => [...prevOrders, ...message.data]);
         }

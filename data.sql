@@ -191,6 +191,21 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number") FROM stdin;
 Dolsot Bibimbap	20	pending	48	2024-08-18 07:10:42.267166	\N
+Corn Cheese	14	pending	50	2024-08-18 07:23:10.111587	\N
+Kimchi Pancake	18	pending	51	2024-08-18 07:41:36.479183	\N
+Corn Cheese	14	pending	52	2024-08-18 07:41:36.479183	\N
+Gonggi-Bap	3	pending	53	2024-08-18 07:41:36.479183	\N
+Samgyetang	25	pending	54	2024-08-18 07:50:39.565138	\N
+Samgyetang	25	pending	55	2024-08-18 07:51:46.659013	\N
+Kimchi Pancake	18	pending	56	2024-08-18 07:51:46.659013	\N
+Kimchi Pancake	18	pending	57	2024-08-18 07:51:46.659013	\N
+Kimchi Pancake	18	pending	58	2024-08-18 07:51:46.659013	\N
+Samgyetang	25	pending	59	2024-08-18 07:52:38.721963	\N
+Kimchi Pancake	18	pending	60	2024-08-18 07:52:38.721963	\N
+Kimchi Pancake	18	pending	61	2024-08-18 07:52:38.721963	\N
+Kimchi Pancake	18	pending	62	2024-08-18 07:52:38.721963	\N
+Vege Gunmandu 6pc	10	pending	63	2024-08-18 07:52:38.721963	\N
+Kimchi Pancake	18	rejected	49	2024-08-18 07:23:10.111587	\N
 \.
 
 
@@ -284,7 +299,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 33, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 48, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 63, true);
 
 
 --

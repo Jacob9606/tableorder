@@ -33,6 +33,32 @@ const OrderDashboard = () => {
     };
 
     fetchOrders();
+
+    // WebSocket 설정
+    const ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com");
+
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log("Received WebSocket message:", message);
+
+      if (message.type === "new_order") {
+        // 새 주문이 들어오면 주문 목록에 추가
+        setOrders((prevOrders) => [...prevOrders, ...message.data]);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    // 컴포넌트 언마운트 시 WebSocket 연결 해제
+    return () => {
+      ws.close();
+    };
   }, []);
 
   const handleApprove = (orderId) => {

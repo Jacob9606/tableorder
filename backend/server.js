@@ -8,6 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const WebSocket = require("ws");
+const http = require("http"); // http 모듈 추가
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 const app = express();
@@ -19,6 +20,27 @@ const emailUser = process.env.EMAIL_USER;
 const emailPass = process.env.EMAIL_PASS;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+// HTTP 서버 생성
+const server = http.createServer(app); // HTTP 서버 생성
+
+// WebSocket 설정 추가
+const wss = new WebSocket.Server({ server }); // HTTP 서버에 WebSocket 연결
+
+// WebSocket 이벤트 처리
+wss.on("connection", function connection(ws) {
+  console.log("A new client connected");
+  ws.on("message", function incoming(message) {
+    console.log("received: %s", message);
+    ws.send(`Echo: ${message}`);
+  });
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+
+  ws.send("Welcome to the WebSocket server!");
+});
 
 // CORS 설정 추가
 const whitelist = [
@@ -432,6 +454,8 @@ app.put("/profile", async (req, res) => {
   }
 });
 
+// make order
+// 주문이 추가되었을 때 WebSocket을 통해 클라이언트에게 알림
 app.post("/cart", async (req, res) => {
   const items = req.body;
   console.log(items);
@@ -446,6 +470,13 @@ app.post("/cart", async (req, res) => {
   if (error) {
     return res.status(500).json({ error: error.message });
   }
+
+  // 새 주문이 들어왔을 때 WebSocket을 통해 클라이언트에게 전송
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ type: "new_order", data }));
+    }
+  });
 
   res.status(200).json({ data });
 });
@@ -502,23 +533,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-});
-
-// WebSocket 설정 추가
-const wss = new WebSocket.Server({ port: 3001 });
-
-wss.on("connection", function connection(ws) {
-  console.log("A new client connected");
-  ws.on("message", function incoming(message) {
-    console.log("received: %s", message);
-    ws.send(`Echo: ${message}`);
-  });
-
-  ws.on("close", () => {
-    console.log("Client disconnected");
-  });
-
-  ws.send("Welcome to the WebSocket server!");
 });

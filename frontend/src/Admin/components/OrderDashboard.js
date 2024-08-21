@@ -39,6 +39,7 @@ const OrderDashboard = () => {
 
     ws.onmessage = (event) => {
       try {
+        console.log("WebSocket message received:", event.data); // 수신된 메시지 확인
         const message = JSON.parse(event.data);
         console.log("Received WebSocket message:", message);
 

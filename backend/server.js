@@ -458,6 +458,8 @@ app.put("/profile", async (req, res) => {
 // 주문이 추가되었을 때 WebSocket을 통해 클라이언트에게 알림
 app.post("/cart", async (req, res) => {
   const items = req.body;
+  console.log("Received items:", items); // items가 서버로 전달되었는지 확인
+
   console.log(items);
   const { data, error } = await supabase.from("orders").insert(
     items.map((item) => ({
@@ -471,9 +473,12 @@ app.post("/cart", async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 
+  console.log("Inserted order data:", data); // 데이터베이스에 정상적으로 삽입되었는지 확인
+
   // 새 주문이 들어왔을 때 WebSocket을 통해 클라이언트에게 전송
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
+      console.log("Sending WebSocket message with data:", data); // WebSocket을 통해 전송되는 데이터 확인
       client.send(JSON.stringify({ type: "new_order", data }));
     }
   });

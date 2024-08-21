@@ -8,48 +8,44 @@ const OrderDashboard = () => {
   const [filter, setFilter] = useState("pending");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}orders`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  // 주문 목록을 가져오는 함수
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}orders`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-        console.log("Response status:", response.status);
+      console.log("Response status:", response.status);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
-        }
-
-        const data = await response.json();
-        console.log("Fetched orders data:", data);
-        setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
       }
-    };
 
+      const data = await response.json();
+      console.log("Fetched orders data:", data);
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    // 초기 주문 목록을 가져옵니다.
     fetchOrders();
 
     // WebSocket 설정
     const ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com");
 
     ws.onmessage = (event) => {
-      try {
-        console.log("WebSocket message received:", event.data); // 수신된 메시지 확인
-        const message = JSON.parse(event.data);
-        console.log("Received WebSocket message:", message);
+      const message = JSON.parse(event.data);
+      console.log("Received WebSocket message:", message);
 
-        if (message.type === "new_order" && Array.isArray(message.data)) {
-          // 새 주문이 들어오면 주문 목록에 추가
-          setOrders((prevOrders) => [...prevOrders, ...message.data]);
-        }
-      } catch (error) {
-        console.error("Failed to parse WebSocket message as JSON:", event.data);
-        // JSON이 아닌 문자열 메시지 처리
+      if (message.type === "new_order") {
+        // 새 주문이 들어오면 주문 목록을 새로고침합니다.
+        fetchOrders();
       }
     };
 

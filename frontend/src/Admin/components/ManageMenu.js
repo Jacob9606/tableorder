@@ -81,6 +81,7 @@ const ManageMenu = () => {
               <p>
                 {item.name} - ${item.price.toFixed(2)}
               </p>
+              <p>{item.category}</p>
               <p>{item.description}</p>
               <button
                 className="update-button"

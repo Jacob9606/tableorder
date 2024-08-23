@@ -33,6 +33,7 @@ const AddItem = () => {
     formData.append("price", price);
     formData.append("description", description);
     formData.append("image", image);
+    formData.append("category", category);
 
     try {
       const response = await fetch(`${BASE_URL}add-item`, {

@@ -6,12 +6,15 @@ import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 import servemelogo from "../../servemelogo.png";
 import { BASE_URL } from "../../config";
+import { useLocation } from "react-router-dom";
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main");
   const [cart, setCart] = useState([]);
   const [viewingCart, setViewingCart] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
+  const location = useLocation();
+  const [tableNo, setTableNo] = useState(null);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -39,6 +42,12 @@ const MenuOrderPage = () => {
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
     setCart(storedCart);
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tableNo = params.get("tableNo");
+    setTableNo(tableNo);
+  }, [location]);
 
   const addToCart = (item) => {
     setCart((prevCart) => {
@@ -118,6 +127,7 @@ const MenuOrderPage = () => {
         <img src={servemelogo} alt="Serve Me Logo" className="logo" />
       </div>
       <h1 className="title">Menu</h1>
+      <h1 className="tableNo">{tableNo}</h1>
       <div className="category-buttons">
         {uniqueCategories.map((category) => (
           <CategoryButton

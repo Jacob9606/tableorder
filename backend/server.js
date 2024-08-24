@@ -265,7 +265,7 @@ app.post("/reset-password", async (req, res) => {
 });
 
 app.post("/add-item", upload.single("image"), async (req, res) => {
-  const { name, price, description } = req.body;
+  const { name, price, description, category } = req.body;
   const image = req.file;
 
   console.log("Request Body:", req.body);
@@ -297,6 +297,7 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
           price,
           description,
           image_url: imageUrl,
+          category
         },
       ]);
 

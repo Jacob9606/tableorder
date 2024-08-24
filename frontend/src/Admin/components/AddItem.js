@@ -9,6 +9,7 @@ const AddItem = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -32,6 +33,7 @@ const AddItem = () => {
     formData.append("price", price);
     formData.append("description", description);
     formData.append("image", image);
+    formData.append("category", category);
 
     try {
       const response = await fetch(`${BASE_URL}/add-item`, {
@@ -88,6 +90,17 @@ const AddItem = () => {
             id="item-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="item-category">Item Category:</label>
+          <input
+            type="text"
+            id="item-category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             required
             className="form-input"
           />

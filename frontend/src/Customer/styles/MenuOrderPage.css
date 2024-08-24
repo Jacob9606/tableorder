@@ -1,24 +1,26 @@
 .container {
-  padding: 1rem;
+  padding: 0; /* 전체 공백 제거 */
   font-family: "Roboto", sans-serif;
   background-color: #f7f9fa;
+  margin-top: -40px; /* 로고 위의 공백 줄이기 */
 }
 
 .logo-container {
   display: flex;
-  justify-content: center;
-  margin-bottom: -8rem;
+  justify-content: flex-start; /* 로고를 왼쪽에 고정 */
+  padding: 0 0 0 10px; /* 로고 왼쪽에 10px의 여백 추가 */
+  margin-bottom: -4rem; /* 로고와 카테고리 버튼 사이의 간격 조정 */
 }
 
 .logo {
-  width: 300px; /* 로고 크기 조정 */
+  width: 150px; /* 로고 크기 조정 */
   height: auto;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem; /* 글자 크기 줄임 */
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: #2c3e50;
   text-align: center;
 }
@@ -28,27 +30,36 @@
   gap: 0.5rem;
   margin-bottom: 1rem;
   overflow-x: auto;
+  padding: 0.5rem; /* 카테고리 버튼 영역에 여백 추가 */
+  border-bottom: 1px solid #dcdcdc; /* 하단에 경계선 추가 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  background-color: transparent; /* 배경색 제거 */
 }
 
 .category-button {
-  padding: 0.5rem 1rem;
-  border: 1px solid gray;
-  background-color: white;
-  border-radius: 0.25rem;
+  padding: 0.5rem; /* 패딩 유지 */
+  font-size: 0.85rem; /* 글자 크기 줄임 */
+  border: 2px solid #3498db; /* 버튼 테두리 색상 */
+  background-color: #f7f9fa; /* 배경색을 배경과 맞추기 */
+  border-radius: 50%; /* 버튼을 동그랗게 만들기 */
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .category-button.selected {
-  border: 2px solid #3498db;
-  background-color: #ecf0f1;
+  background-color: #3498db; /* 선택된 버튼 배경색 */
+  color: white; /* 선택된 버튼 글자색 */
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* 한 줄에 두 개의 카드 표시 */
   gap: 1rem;
+  padding: 1rem; /* 메뉴 항목의 좌우 여백 추가 */
 }
 
 .menu-item {
@@ -59,6 +70,8 @@
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  max-height: 300px; /* 카드 최대 높이 설정 */
+  overflow: hidden; /* 카드 내용이 잘리지 않도록 설정 */
 }
 
 .menu-item:hover {
@@ -67,24 +80,39 @@
 
 .menu-item img {
   width: 100%;
-  height: 200px;
+  height: 100px; /* 이미지 높이 줄임 */
   object-fit: cover;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
 
 .menu-item-content {
-  padding: 1rem;
+  padding: 0.5rem; /* 내부 패딩 줄임 */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 세로 공간 조정 */
+  height: 100%; /* 부모의 높이를 채우도록 설정 */
 }
 
 .menu-item-content h2 {
   font-weight: bold;
   color: #34495e;
+  font-size: 1rem; /* 글자 크기 줄임 */
+  margin-bottom: 0.5rem;
 }
 
 .menu-item-content p {
   color: #2ecc71;
   font-weight: bold;
+  font-size: 0.85rem; /* 글자 크기 줄임 */
+  margin-bottom: 0.5rem;
+}
+
+.menu-item-content h3 {
+  font-size: 0.8rem; /* 추가된 설명의 글자 크기 줄임 */
+  margin-bottom: 0.5rem;
+  color: #7f8c8d;
 }
 
 .menu-item-content button {
@@ -94,9 +122,10 @@
   color: white;
   border: none;
   border-radius: 0.25rem;
-  margin-top: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 0.9rem; /* 버튼 글자 크기 줄임 */
+  margin-top: auto; /* 버튼을 카드 하단으로 배치 */
 }
 
 .menu-item-content button:hover {
@@ -124,6 +153,7 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem; /* 버튼 글자 크기 줄임 */
 }
 
 .cart-button:hover {

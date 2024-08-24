@@ -34,7 +34,7 @@ const AddItem = () => {
     formData.append("image", image);
 
     try {
-      const response = await fetch(`${BASE_URL}add-item`, {
+      const response = await fetch(`${BASE_URL}/add-item`, {
         method: "POST",
         body: formData,
       });

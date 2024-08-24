@@ -13,7 +13,7 @@ const Cart = ({ removeFromCart, navigateToMenu }) => {
 
   const placeOrder = async () => {
     try {
-      const response = await fetch(`${BASE_URL}cart`, {
+      const response = await fetch(`${BASE_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

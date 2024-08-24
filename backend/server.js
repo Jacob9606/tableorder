@@ -128,6 +128,7 @@ app.post("/signup", async (req, res) => {
 
     const emailToken = jwt.sign({ email }, jwtSecret, { expiresIn: "1h" });
     const emailVerificationUrl = `https://serve-me-70c148e5be60.herokuapp.com/verify-email?token=${emailToken}`;
+    //const emailVerificationUrl = `http://localhost:${port}/verify-email?token=${emailToken}`;
 
     const mailOptions = {
       from: emailUser,

@@ -13,7 +13,7 @@ const Profile = ({ onLogout }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch(`${BASE_URL}profile`, {
+        const response = await fetch(`${BASE_URL}/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const Profile = ({ onLogout }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${BASE_URL}profile`, {
+      const response = await fetch(`${BASE_URL}/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

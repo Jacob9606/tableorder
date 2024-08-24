@@ -16,7 +16,7 @@ const MenuOrderPage = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${BASE_URL}items`, {
+        const response = await fetch(`${BASE_URL}/items`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

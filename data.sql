@@ -172,6 +172,7 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 31	Kimchi Pancake	18.00	Fermented kimchi with wheat flour	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF_yzbcxJNZVFlpTX5TzxOjitoFmU6rqbQQw&s	2024-08-10 01:45:16.775857+00	Entree
 32	Corn Cheese	14.00	Seasoned loose corn covered with seared cheese	https://www.beyondkimchee.com/wp-content/uploads/2023/11/korean-corn-cheese-thumbnail.jpg	2024-08-10 01:45:57.410963+00	Entree
 33	Steamed eggs	15.00	Steamed eggs in hot pot	https://drivemehungry.com/wp-content/uploads/2021/10/korean-steamed-eggs-gyeran-jjim-13.jpg	2024-08-10 01:46:33.567805+00	Entree
+36	Chicken wings	12.00	Chicken wings in buffalo sauce	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724393559884-images.jpeg	2024-08-23 06:12:41.553244+00	Entree
 21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share
 22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share
 23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share
@@ -190,10 +191,17 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number") FROM stdin;
-Kimchi-Jjigae	19	pending	87	2024-08-21 08:32:32.737057	\N
-Dolsot Bibimbap	20	pending	88	2024-08-21 08:55:57.461429	\N
-Samgyetang	25	pending	89	2024-08-21 08:55:57.461429	\N
 Samgyetang	25	completed	86	2024-08-21 08:32:32.737057	\N
+Kimchi-Jjigae	19	rejected	87	2024-08-21 08:32:32.737057	\N
+Samgyetang	25	rejected	89	2024-08-21 08:55:57.461429	\N
+Dolsot Bibimbap	20	rejected	88	2024-08-21 08:55:57.461429	\N
+Dolsot Bibimbap	20	preparation	90	2024-08-23 09:40:19.933758	\N
+Samgyetang	25	rejected	91	2024-08-23 09:40:19.933758	\N
+Dolsot Bibimbap	20	pending	92	2024-08-24 00:36:13.788499	\N
+Samgyetang	25	pending	93	2024-08-24 00:36:13.788499	\N
+Kimchi-Jjigae	19	pending	94	2024-08-24 00:36:56.280583	\N
+Samgyetang	25	pending	95	2024-08-24 00:36:56.280583	\N
+Samgyetang	25	pending	96	2024-08-24 00:36:56.280583	\N
 \.
 
 
@@ -228,6 +236,9 @@ ad2f9c65-1893-41f6-9fe9-bf8621e4746b	items	1722730900502-bibimbap.jpeg	\N	2024-0
 121b00b8-bc0e-4359-8cb7-d1cecd365ac3	items	1722991228725-aneta.jpg	\N	2024-08-07 00:40:29.195298+00	2024-08-07 00:40:29.195298+00	2024-08-07 00:40:29.195298+00	{"eTag": "\\"3f242a2d8fd17780cdc5c72216d7c220\\"", "size": 125309, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-07T00:40:30.000Z", "contentLength": 125309, "httpStatusCode": 200}	aa6372c4-02ff-4c2b-b6c3-7d6e8c837d5e	\N	\N
 896ce288-1af8-454c-9afd-d3a2c57a8f28	items	1723077073745-mastautim.jpg	\N	2024-08-08 00:31:14.094357+00	2024-08-08 00:31:14.094357+00	2024-08-08 00:31:14.094357+00	{"eTag": "\\"480434b1bde1feb1074830ae13cd713e\\"", "size": 40358, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-08T00:31:15.000Z", "contentLength": 40358, "httpStatusCode": 200}	d45e099e-1a43-44b7-bff1-4abf366868b3	\N	\N
 8a8580b8-c82d-481b-8f5c-2f5f4b7ac313	items	1723077131959-Screenshot 2024-07-04 at 14.45.30.png	\N	2024-08-08 00:32:12.79968+00	2024-08-08 00:32:12.79968+00	2024-08-08 00:32:12.79968+00	{"eTag": "\\"993d0f72d4284a2453cd2bd9f971db81\\"", "size": 3471174, "mimetype": "image/png", "cacheControl": "max-age=3600", "lastModified": "2024-08-08T00:32:13.000Z", "contentLength": 3471174, "httpStatusCode": 200}	e99ad088-4e96-4f2f-b0b6-a66353710ff1	\N	\N
+e58a0baa-1b0b-449d-9a7c-9632f9e393aa	items	1724392651741-images.jpeg	\N	2024-08-23 05:57:32.74278+00	2024-08-23 05:57:32.74278+00	2024-08-23 05:57:32.74278+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T05:57:33.000Z", "contentLength": 9901, "httpStatusCode": 200}	c3ede1d3-9823-4d38-ac0e-7100ed6a62a5	\N	{}
+0e90d1ca-b183-4bb7-920a-2f6b94e2d2d8	items	1724392942806-images.jpeg	\N	2024-08-23 06:02:23.80359+00	2024-08-23 06:02:23.80359+00	2024-08-23 06:02:23.80359+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T06:02:24.000Z", "contentLength": 9901, "httpStatusCode": 200}	37adfa4b-d769-4ec8-8816-9c24b49c9b69	\N	{}
+c824759b-c8d5-4b4c-ae13-afa71fb08ba8	items	1724393559884-images.jpeg	\N	2024-08-23 06:12:40.81466+00	2024-08-23 06:12:40.81466+00	2024-08-23 06:12:40.81466+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T06:12:41.000Z", "contentLength": 9901, "httpStatusCode": 200}	e1ac52f9-e779-4888-9f8f-e3e229a1cc7d	\N	{}
 \.
 
 
@@ -280,14 +291,14 @@ SELECT pg_catalog.setval('"public"."admin_id_seq"', 30, true);
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."items_id_seq"', 33, true);
+SELECT pg_catalog.setval('"public"."items_id_seq"', 36, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 89, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 96, true);
 
 
 --

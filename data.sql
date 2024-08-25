@@ -159,8 +159,8 @@ COPY "pgsodium"."key" ("id", "status", "created", "expires", "key_type", "key_id
 --
 
 COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "address", "email_verified") FROM stdin;
+30	snm9606@naver.com	$2a$10$gEzcJAIn9oXyiK/6blxQ1eWy/uXQZ745K2c/pO4m2gr8WVCogOwUK	Illnara2	0414989606	fairy meadow	t
 27	timothyjt96@gmail.com	$2a$10$O1YjVXReP.5xD.25wcGM3ePf8lW7llu0iIM8JyksDAG1atTk5D.ny	Hanok	12345678	Northfields	t
-30	snm9606@naver.com	$2a$10$gEzcJAIn9oXyiK/6blxQ1eWy/uXQZ745K2c/pO4m2gr8WVCogOwUK	Illnara	0414989606	fairy meadow	t
 \.
 
 
@@ -168,21 +168,34 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at", "category") FROM stdin;
-31	Kimchi Pancake	18.00	Fermented kimchi with wheat flour	https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF_yzbcxJNZVFlpTX5TzxOjitoFmU6rqbQQw&s	2024-08-10 01:45:16.775857+00	Entree
-32	Corn Cheese	14.00	Seasoned loose corn covered with seared cheese	https://www.beyondkimchee.com/wp-content/uploads/2023/11/korean-corn-cheese-thumbnail.jpg	2024-08-10 01:45:57.410963+00	Entree
-33	Steamed eggs	15.00	Steamed eggs in hot pot	https://drivemehungry.com/wp-content/uploads/2021/10/korean-steamed-eggs-gyeran-jjim-13.jpg	2024-08-10 01:46:33.567805+00	Entree
-36	Chicken wings	12.00	Chicken wings in buffalo sauce	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724393559884-images.jpeg	2024-08-23 06:12:41.553244+00	Entree
-21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share
-22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share
-23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share
-24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share
-25	Gonggi-Bap	3.00	A bowl of rice	https://www.tcmworld.org/wp-content/uploads/2016/08/shutterstock_462377029.jpg	2024-08-10 01:37:07.758861+00	Extra
-26	Udong-Sari	3.00	Thick white noodles. Udon	https://www.justonecookbook.com/wp-content/uploads/2024/03/Kake-Udon-7549-I-1.jpg	2024-08-10 01:38:25.78798+00	Extra
-27	Dolsot Bibimbap	20.00	Rice with assorted vegetables in hot stone pot	https://futuredish.com/wp-content/uploads/2017/12/Dolsot-Bibimbap-500x375.jpg	2024-08-10 01:39:54.439522+00	Main
-28	Kimchi-Jjigae	19.00	Fermented kimchi stew with rice	https://www.koreanbapsang.com/wp-content/uploads/2014/03/DSC5897-2.jpg	2024-08-10 01:40:55.951526+00	Main
-29	Samgyetang	25.00	Ginseng chicken soup with rice.	https://twoplaidaprons.com/wp-content/uploads/2023/08/side-shot-of-samgyetang-cooked-thumbnail.jpg	2024-08-10 01:42:51.303779+00	Main
-30	Vege Gunmandu 6pc	10.00	Vegetable fried dumpling 6pc	https://www.maangchi.com/wp-content/uploads/2008/05/fried-dumplings.jpg	2024-08-10 01:44:24.195777+00	Entree
+COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at", "category", "admin_id") FROM stdin;
+32	Corn Cheese	14.00	Seasoned loose corn covered with seared cheese	https://www.beyondkimchee.com/wp-content/uploads/2023/11/korean-corn-cheese-thumbnail.jpg	2024-08-10 01:45:57.410963+00	Entree	\N
+33	Steamed eggs	15.00	Steamed eggs in hot pot	https://drivemehungry.com/wp-content/uploads/2021/10/korean-steamed-eggs-gyeran-jjim-13.jpg	2024-08-10 01:46:33.567805+00	Entree	\N
+36	Chicken wings	12.00	Chicken wings in buffalo sauce	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724393559884-images.jpeg	2024-08-23 06:12:41.553244+00	Entree	\N
+31	Kimchi Pancake2	18.00	Fermented kimchi with wheat flour	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724475541667-kimchi pankcake.jpeg	2024-08-10 01:45:16.775857+00	Entree	\N
+21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share	\N
+22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share	\N
+23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share	\N
+24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share	\N
+25	Gonggi-Bap	3.00	A bowl of rice	https://www.tcmworld.org/wp-content/uploads/2016/08/shutterstock_462377029.jpg	2024-08-10 01:37:07.758861+00	Extra	\N
+26	Udong-Sari	3.00	Thick white noodles. Udon	https://www.justonecookbook.com/wp-content/uploads/2024/03/Kake-Udon-7549-I-1.jpg	2024-08-10 01:38:25.78798+00	Extra	\N
+27	Dolsot Bibimbap	20.00	Rice with assorted vegetables in hot stone pot	https://futuredish.com/wp-content/uploads/2017/12/Dolsot-Bibimbap-500x375.jpg	2024-08-10 01:39:54.439522+00	Main	\N
+28	Kimchi-Jjigae	19.00	Fermented kimchi stew with rice	https://www.koreanbapsang.com/wp-content/uploads/2014/03/DSC5897-2.jpg	2024-08-10 01:40:55.951526+00	Main	\N
+29	Samgyetang	25.00	Ginseng chicken soup with rice.	https://twoplaidaprons.com/wp-content/uploads/2023/08/side-shot-of-samgyetang-cooked-thumbnail.jpg	2024-08-10 01:42:51.303779+00	Main	\N
+30	Vege Gunmandu 6pc	10.00	Vegetable fried dumpling 6pc	https://www.maangchi.com/wp-content/uploads/2008/05/fried-dumplings.jpg	2024-08-10 01:44:24.195777+00	Entree	\N
+\.
+
+
+--
+-- Data for Name: tables; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "public"."tables" ("id", "admin_id", "table_number") FROM stdin;
+11	27	1
+12	27	2
+13	27	3
+14	30	1
+15	30	2
 \.
 
 
@@ -190,18 +203,13 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number") FROM stdin;
-Samgyetang	25	completed	86	2024-08-21 08:32:32.737057	\N
-Kimchi-Jjigae	19	rejected	87	2024-08-21 08:32:32.737057	\N
-Samgyetang	25	rejected	89	2024-08-21 08:55:57.461429	\N
-Dolsot Bibimbap	20	rejected	88	2024-08-21 08:55:57.461429	\N
-Dolsot Bibimbap	20	preparation	90	2024-08-23 09:40:19.933758	\N
-Samgyetang	25	rejected	91	2024-08-23 09:40:19.933758	\N
-Dolsot Bibimbap	20	pending	92	2024-08-24 00:36:13.788499	\N
-Samgyetang	25	pending	93	2024-08-24 00:36:13.788499	\N
-Kimchi-Jjigae	19	pending	94	2024-08-24 00:36:56.280583	\N
-Samgyetang	25	pending	95	2024-08-24 00:36:56.280583	\N
-Samgyetang	25	pending	96	2024-08-24 00:36:56.280583	\N
+COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id") FROM stdin;
+Kimchi-Jjigae	19	pending	159	2024-08-24 07:33:06.648895	\N	\N
+Samgyetang	25	pending	160	2024-08-24 07:34:22.100463	\N	\N
+Steamed eggs	15	pending	161	2024-08-24 09:35:43.857634	\N	\N
+Chicken wings	12	pending	162	2024-08-24 09:35:43.857634	\N	\N
+Gonggi-Bap	3	pending	163	2024-08-24 09:49:26.868597	\N	\N
+Udong-Sari	3	pending	164	2024-08-24 09:49:26.868597	\N	\N
 \.
 
 
@@ -239,6 +247,8 @@ ad2f9c65-1893-41f6-9fe9-bf8621e4746b	items	1722730900502-bibimbap.jpeg	\N	2024-0
 e58a0baa-1b0b-449d-9a7c-9632f9e393aa	items	1724392651741-images.jpeg	\N	2024-08-23 05:57:32.74278+00	2024-08-23 05:57:32.74278+00	2024-08-23 05:57:32.74278+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T05:57:33.000Z", "contentLength": 9901, "httpStatusCode": 200}	c3ede1d3-9823-4d38-ac0e-7100ed6a62a5	\N	{}
 0e90d1ca-b183-4bb7-920a-2f6b94e2d2d8	items	1724392942806-images.jpeg	\N	2024-08-23 06:02:23.80359+00	2024-08-23 06:02:23.80359+00	2024-08-23 06:02:23.80359+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T06:02:24.000Z", "contentLength": 9901, "httpStatusCode": 200}	37adfa4b-d769-4ec8-8816-9c24b49c9b69	\N	{}
 c824759b-c8d5-4b4c-ae13-afa71fb08ba8	items	1724393559884-images.jpeg	\N	2024-08-23 06:12:40.81466+00	2024-08-23 06:12:40.81466+00	2024-08-23 06:12:40.81466+00	{"eTag": "\\"48ea36fc085f6ebad81487bf282f7581\\"", "size": 9901, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-23T06:12:41.000Z", "contentLength": 9901, "httpStatusCode": 200}	e1ac52f9-e779-4888-9f8f-e3e229a1cc7d	\N	{}
+905b25d1-e197-4664-b686-685087b184ae	items	1724475541667-kimchi pankcake.jpeg	\N	2024-08-24 04:59:05.589412+00	2024-08-24 04:59:05.589412+00	2024-08-24 04:59:05.589412+00	{"eTag": "\\"696453d5d982adf1a998757f0952db65\\"", "size": 13427, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-24T04:59:06.000Z", "contentLength": 13427, "httpStatusCode": 200}	67fc7192-d1f9-4205-af85-f342f6b1b710	\N	{}
+a8c4ed8a-389d-48c6-9efd-6a78bea0221f	items	1724476318543-kimchi pankcake.jpeg	\N	2024-08-24 05:11:59.524528+00	2024-08-24 05:11:59.524528+00	2024-08-24 05:11:59.524528+00	{"eTag": "\\"696453d5d982adf1a998757f0952db65\\"", "size": 13427, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2024-08-24T05:12:00.000Z", "contentLength": 13427, "httpStatusCode": 200}	bfa315af-ed14-4268-a025-ddcc8e391689	\N	{}
 \.
 
 
@@ -291,14 +301,21 @@ SELECT pg_catalog.setval('"public"."admin_id_seq"', 30, true);
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."items_id_seq"', 36, true);
+SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 
 
 --
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 96, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 164, true);
+
+
+--
+-- Name: tables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."tables_id_seq"', 15, true);
 
 
 --

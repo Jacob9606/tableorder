@@ -204,15 +204,6 @@ COPY "public"."tables" ("id", "admin_id", "table_number") FROM stdin;
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id") FROM stdin;
-Kimchi-Jjigae	19	pending	165	2024-08-25 09:25:26.040028	\N	\N
-Samgyetang	25	pending	166	2024-08-25 09:25:26.040028	\N	\N
-Samgyetang	25	pending	167	2024-08-25 09:25:26.040028	\N	\N
-Dolsot Bibimbap	20	pending	168	2024-08-25 09:25:26.040028	\N	\N
-Kimchi-Jjigae	19	pending	169	2024-08-25 09:35:51.537313	\N	\N
-Samgyetang	25	pending	170	2024-08-25 09:35:51.537313	\N	\N
-Samgyetang	25	pending	171	2024-08-25 09:35:51.537313	\N	\N
-Dolsot Bibimbap	20	pending	172	2024-08-25 09:35:51.537313	\N	\N
-Kimchi-Jjigae	19	pending	173	2024-08-25 09:35:51.537313	\N	\N
 \.
 
 

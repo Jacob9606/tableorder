@@ -204,6 +204,10 @@ COPY "public"."tables" ("id", "admin_id", "table_number") FROM stdin;
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id") FROM stdin;
+Kimchi-Jjigae	19	pending	174	2024-08-27 03:06:43.222665	\N	\N
+Samgyetang	25	pending	175	2024-08-27 03:06:43.222665	\N	\N
+Kimchi-Jjigae	19	pending	176	2024-08-27 03:07:29.424714	\N	\N
+Samgyetang	25	pending	177	2024-08-27 03:07:29.424714	\N	\N
 \.
 
 
@@ -302,7 +306,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 173, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 177, true);
 
 
 --

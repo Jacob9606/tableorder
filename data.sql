@@ -187,27 +187,10 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 
 
 --
--- Data for Name: tables; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "public"."tables" ("id", "admin_id", "table_number") FROM stdin;
-11	27	1
-12	27	2
-13	27	3
-14	30	1
-15	30	2
-\.
-
-
---
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id") FROM stdin;
-Kimchi-Jjigae	19	pending	174	2024-08-27 03:06:43.222665	\N	\N
-Samgyetang	25	pending	175	2024-08-27 03:06:43.222665	\N	\N
-Kimchi-Jjigae	19	pending	176	2024-08-27 03:07:29.424714	\N	\N
-Samgyetang	25	pending	177	2024-08-27 03:07:29.424714	\N	\N
 \.
 
 
@@ -307,13 +290,6 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 --
 
 SELECT pg_catalog.setval('"public"."orders_id_seq"', 177, true);
-
-
---
--- Name: tables_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."tables_id_seq"', 15, true);
 
 
 --

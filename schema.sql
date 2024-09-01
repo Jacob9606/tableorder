@@ -137,7 +137,8 @@ CREATE TABLE IF NOT EXISTS "public"."orders" (
     "id" integer NOT NULL,
     "created_at" timestamp without time zone DEFAULT "now"(),
     "customer_number" integer,
-    "table_id" integer
+    "table_id" integer,
+    "admin_id" integer
 );
 
 

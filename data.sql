@@ -169,20 +169,20 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 --
 
 COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at", "category", "admin_id") FROM stdin;
-21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share	27
-22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share	27
-23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share	27
-24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share	27
-25	Gonggi-Bap	3.00	A bowl of rice	https://www.tcmworld.org/wp-content/uploads/2016/08/shutterstock_462377029.jpg	2024-08-10 01:37:07.758861+00	Extra	27
-26	Udong-Sari	3.00	Thick white noodles. Udon	https://www.justonecookbook.com/wp-content/uploads/2024/03/Kake-Udon-7549-I-1.jpg	2024-08-10 01:38:25.78798+00	Extra	27
-27	Dolsot Bibimbap	20.00	Rice with assorted vegetables in hot stone pot	https://futuredish.com/wp-content/uploads/2017/12/Dolsot-Bibimbap-500x375.jpg	2024-08-10 01:39:54.439522+00	Main	27
-28	Kimchi-Jjigae	19.00	Fermented kimchi stew with rice	https://www.koreanbapsang.com/wp-content/uploads/2014/03/DSC5897-2.jpg	2024-08-10 01:40:55.951526+00	Main	27
-29	Samgyetang	25.00	Ginseng chicken soup with rice.	https://twoplaidaprons.com/wp-content/uploads/2023/08/side-shot-of-samgyetang-cooked-thumbnail.jpg	2024-08-10 01:42:51.303779+00	Main	27
+21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share	30
+22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share	30
+23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share	30
+24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share	30
 30	Vege Gunmandu 6pc	10.00	Vegetable fried dumpling 6pc	https://www.maangchi.com/wp-content/uploads/2008/05/fried-dumplings.jpg	2024-08-10 01:44:24.195777+00	Entree	27
 31	Kimchi Pancake2	18.00	Fermented kimchi with wheat flour	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724475541667-kimchi pankcake.jpeg	2024-08-10 01:45:16.775857+00	Entree	27
+25	Gonggi-Bap	3.00	A bowl of rice	https://www.tcmworld.org/wp-content/uploads/2016/08/shutterstock_462377029.jpg	2024-08-10 01:37:07.758861+00	Extra	30
+36	Chicken wings	12.00	Chicken wings in buffalo sauce	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724393559884-images.jpeg	2024-08-23 06:12:41.553244+00	Entree	27
+26	Udong-Sari	3.00	Thick white noodles. Udon	https://www.justonecookbook.com/wp-content/uploads/2024/03/Kake-Udon-7549-I-1.jpg	2024-08-10 01:38:25.78798+00	Extra	30
+27	Dolsot Bibimbap	20.00	Rice with assorted vegetables in hot stone pot	https://futuredish.com/wp-content/uploads/2017/12/Dolsot-Bibimbap-500x375.jpg	2024-08-10 01:39:54.439522+00	Main	30
+28	Kimchi-Jjigae	19.00	Fermented kimchi stew with rice	https://www.koreanbapsang.com/wp-content/uploads/2014/03/DSC5897-2.jpg	2024-08-10 01:40:55.951526+00	Main	30
+29	Samgyetang	25.00	Ginseng chicken soup with rice.	https://twoplaidaprons.com/wp-content/uploads/2023/08/side-shot-of-samgyetang-cooked-thumbnail.jpg	2024-08-10 01:42:51.303779+00	Main	30
 32	Corn Cheese	14.00	Seasoned loose corn covered with seared cheese	https://www.beyondkimchee.com/wp-content/uploads/2023/11/korean-corn-cheese-thumbnail.jpg	2024-08-10 01:45:57.410963+00	Entree	27
 33	Steamed eggs	15.00	Steamed eggs in hot pot	https://drivemehungry.com/wp-content/uploads/2021/10/korean-steamed-eggs-gyeran-jjim-13.jpg	2024-08-10 01:46:33.567805+00	Entree	27
-36	Chicken wings	12.00	Chicken wings in buffalo sauce	https://nirarnqszpwmznmykxaf.supabase.co/storage/v1/object/public/items/1724393559884-images.jpeg	2024-08-23 06:12:41.553244+00	Entree	27
 \.
 
 
@@ -190,7 +190,11 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id") FROM stdin;
+COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id", "admin_id") FROM stdin;
+Kimchi-Jjigae	19	Pending	178	2024-08-31 11:13:46.073	1234	1	30
+Dolsot Bibimbap	20	Pending	179	2024-08-31 11:13:46.073	1234	1	30
+Dolsot Bibimbap	20	Pending	180	2024-08-31 11:14:18.6	1234	2	29
+Dolsot Bibimbap	20	Pending	181	2024-08-31 11:29:46.521	1234	2	30
 \.
 
 
@@ -289,7 +293,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 177, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 181, true);
 
 
 --

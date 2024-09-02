@@ -44,7 +44,7 @@ const MenuOrderPage = () => {
     const fetchMenuItems = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/items?admin_id=${adminIdParam}`, // admin_id 추가
+          `${BASE_URL}items?admin_id=${adminIdParam}`, // 로컬로 할때는 /추가하기.
           {
             method: "GET",
             headers: {

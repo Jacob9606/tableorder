@@ -134,6 +134,11 @@ app.use(
   express.static(path.join(__dirname, "..", "frontend", "public"))
 );
 
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  next();
+});
+
 app.post("/signup", async (req, res) => {
   console.log("Request Body:", req.body);
   const { email, password, shopName, phoneNumber, address } = req.body;

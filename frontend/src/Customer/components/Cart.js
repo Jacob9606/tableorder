@@ -39,7 +39,7 @@ const Cart = ({
     console.log("Placing order with table_id:", tableId);
 
     try {
-      const response = await fetch(`${BASE_URL}/cart`, {
+      const response = await fetch(`${BASE_URL}cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -31,11 +31,20 @@ const AdminLoginPage = ({ onLogin }) => {
       }
 
       const data = await response.json();
+      console.log("Received response data:", data); // 응답 데이터 디버깅
+
       if (response.status === 200) {
         localStorage.setItem("authToken", data.token); // 토큰을 로컬 저장소에 저장
+
+        // 서버로부터 admin_id를 받는다고 가정합니다.
+        const adminId = data.admin_id; // 서버 응답 데이터에 admin 테이블의 id가 있다고 가정
+        console.log("Admin ID:", adminId); // admin_id를 콘솔에 출력
+
         onLogin(); // 로그인 성공 시 onLogin 콜백 호출
         alert("Login successful.");
-        navigate("/dashboard");
+
+        // admin_id를 포함하여 대시보드로 이동
+        navigate(`/dashboard?admin_id=${adminId}`);
       } else {
         alert(data.error);
       }
@@ -48,7 +57,6 @@ const AdminLoginPage = ({ onLogin }) => {
   return (
     <div className="login-container">
       <img src={servemelogo} alt="ServeMe Logo" className="login-logo" />
-      {/* 이미지 추가 */}
       <h1 className="login-title">Admin Login</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">

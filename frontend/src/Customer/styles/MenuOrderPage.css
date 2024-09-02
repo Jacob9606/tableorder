@@ -5,16 +5,29 @@
   margin-top: -40px; /* 로고 위의 공백 줄이기 */
 }
 
+.header-container {
+  display: flex;
+  justify-content: space-between; /* 로고와 테이블 번호를 양쪽 끝에 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  padding: 10px 20px; /* 좌우 여백 추가 */
+  margin-bottom: 0;
+}
+
 .logo-container {
   display: flex;
   justify-content: flex-start; /* 로고를 왼쪽에 고정 */
-  padding: 0 0 0 10px; /* 로고 왼쪽에 10px의 여백 추가 */
-  margin-bottom: -4rem; /* 로고와 카테고리 버튼 사이의 간격 조정 */
 }
 
 .logo {
   width: 150px; /* 로고 크기 조정 */
   height: auto;
+}
+
+.tableNo {
+  font-size: 1.5rem; /* 글자 크기 */
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0;
 }
 
 .title {
@@ -29,6 +42,7 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  margin-top: -3.5rem; /* 위쪽 여백을 줄여서 로고와의 간격 줄이기 */
   overflow-x: auto;
   padding: 0.5rem; /* 카테고리 버튼 영역에 여백 추가 */
   border-bottom: 1px solid #dcdcdc; /* 하단에 경계선 추가 */

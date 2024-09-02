@@ -14,39 +14,60 @@ const MenuOrderPage = () => {
   const [viewingCart, setViewingCart] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   const location = useLocation();
-  const [tableNo, setTableNo] = useState(null);
+  const [tableId, setTableId] = useState(null);
+  const [adminId, setAdminId] = useState(null); // adminId 상태 추가
+
+  // generateCustomerNumber 함수를 useState보다 위로 이동
+  const generateCustomerNumber = () => {
+    const newCustomerNumber = Math.floor(Math.random() * 10000);
+    localStorage.setItem("customer_number", newCustomerNumber);
+    return newCustomerNumber;
+  };
+
+  const [customerNumber, setCustomerNumber] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("customer_number") || generateCustomerNumber();
+  });
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tableIdParam = params.get("table_id");
+    const adminIdParam = params.get("admin_id"); // admin_id 가져오기
+    setTableId(tableIdParam);
+    setAdminId(adminIdParam); // adminId 설정
+
+    if (!tableIdParam) {
+      console.warn("Missing table_id in URL parameters.");
+      return;
+    }
+
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/items`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${BASE_URL}/items?admin_id=${adminIdParam}`, // admin_id 추가
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch items");
         }
 
         const data = await response.json();
-        console.log("Fetched items:", data);
         setMenuItems(data);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
     };
+
     fetchMenuItems();
 
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
     setCart(storedCart);
-  }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const tableNo = params.get("tableNo");
-    setTableNo(tableNo);
   }, [location]);
 
   const addToCart = (item) => {
@@ -73,45 +94,16 @@ const MenuOrderPage = () => {
     setViewingCart(false);
   };
 
-  const placeOrder = async () => {
-    const items = cart;
-    console.log("Placing order:", items);
-
-    try {
-      const response = await fetch(`${BASE_URL}cart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(items),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to place order");
-      }
-
-      setViewingCart(false);
-      localStorage.removeItem("items");
-      setCart([]);
-
-      console.log("Order placed successfully");
-    } catch (error) {
-      console.error("Error placing order:", error);
-    }
-  };
-
-  function isCart({ length }) {
-    if (length > 0) {
-      return <CartButton cartLength={cart.length} onClick={navigateToCart} />;
-    }
-  }
-
   if (viewingCart) {
     return (
       <Cart
         removeFromCart={removeFromCart}
         navigateToMenu={navigateToMenu}
-        placeOrder={placeOrder}
+        setViewingCart={setViewingCart}
+        setCart={setCart}
+        tableId={tableId}
+        customerNumber={customerNumber}
+        adminId={adminId} // Cart 컴포넌트에 adminId 전달
       />
     );
   }
@@ -123,11 +115,12 @@ const MenuOrderPage = () => {
 
   return (
     <div className="container">
-      <div className="logo-container">
-        <img src={servemelogo} alt="Serve Me Logo" className="logo" />
+      <div className="header-container">
+        <div className="logo-container">
+          <img src={servemelogo} alt="Serve Me Logo" className="logo" />
+        </div>
+        <h1 className="table-id">Table: {tableId}</h1>
       </div>
-      {/* <h1 className="title">Menu</h1> */}
-      <h1 className="tableNo">{tableNo}</h1>
       <div className="category-buttons">
         {uniqueCategories.map((category) => (
           <CategoryButton
@@ -143,7 +136,9 @@ const MenuOrderPage = () => {
           <MenuItemCard key={item.id} item={item} addToCart={addToCart} />
         ))}
       </div>
-      {isCart({ length: cart.length })}
+      {cart.length > 0 && (
+        <CartButton cartLength={cart.length} onClick={navigateToCart} />
+      )}
     </div>
   );
 };

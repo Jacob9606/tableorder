@@ -76,7 +76,7 @@ const App = () => {
       />
       <Route path="/cart" element={<Cart />} />
       <Route path="/order-confirmation" element={<OrderConfirmation />} />
-      <Route path="/" element={<Navigate to="/admin" />} />
+      <Route path="/" element={<Navigate to="/menu" />} />
     </Routes>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/OrderDashboard.css";
 import { BASE_URL } from "../../config";
 
@@ -7,25 +7,24 @@ const OrderDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState("pending");
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 주문 목록을 가져오는 함수
-  const fetchOrders = async () => {
+  const fetchOrders = async (adminId) => {
     try {
-      const response = await fetch(`${BASE_URL}/orders`, {
+      const response = await fetch(`${BASE_URL}/orders?admin_id=${adminId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      console.log("Response status:", response.status);
-
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
 
       const data = await response.json();
-      console.log("Fetched orders data:", data);
+      console.log("Fetched grouped orders data:", data);
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -33,66 +32,121 @@ const OrderDashboard = () => {
   };
 
   useEffect(() => {
-    // 초기 주문 목록을 가져옵니다.
-    fetchOrders();
+    const params = new URLSearchParams(location.search);
+    const adminId = params.get("admin_id");
+
+    if (!adminId) {
+      console.warn("Missing admin_id in URL parameters.");
+      return;
+    }
+
+    fetchOrders(adminId);
+
+    let ws; // WebSocket 변수를 useEffect 외부에 선언합니다.
+
+    // 사운드 재생 함수
+    const playSound = () => {
+      const audio = new Audio("/tableorder/notification.mp3"); // 공용 폴더의 notification.mp3 파일 경로
+      audio
+        .play()
+        .catch((error) => console.error("Audio playback failed:", error));
+    };
 
     // WebSocket 설정
-    const ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com");
+    const connectWebSocket = () => {
+      //ws = new WebSocket("ws://localhost:3000"); // 로컬 환경에서 WebSocket URL
+      ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com"); // heroku URL
 
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log("Received WebSocket message:", message);
+      ws.onopen = () => {
+        console.log("WebSocket connection established");
+      };
 
-      if (message.type === "new_order") {
-        // 새 주문이 들어오면 주문 목록을 새로고침합니다.
-        fetchOrders();
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        console.log("Received WebSocket message:", message);
+
+        if (message.type === "new_order") {
+          fetchOrders(adminId); // 새로운 주문이 있을 때 주문을 다시 가져옵니다.
+          playSound(); // 새로운 주문이 있을 때 사운드 재생
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket connection closed", event.reason);
+        setTimeout(connectWebSocket, 3000); // 3초 후 재연결 시도
+      };
+    };
+
+    connectWebSocket(); // WebSocket 연결 시도
+
+    return () => {
+      if (ws) {
+        ws.close();
       }
     };
+  }, [location]);
 
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    // 컴포넌트 언마운트 시 WebSocket 연결 해제
-    return () => {
-      ws.close();
-    };
-  }, []);
-
-  const handleApprove = (orderId) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: "preparation" } : order
-      )
-    );
-    updateOrderStatus(orderId, "preparation");
+  const handleApprove = (orderGroup) => {
+    orderGroup.items.forEach((order) => {
+      setOrders((prevOrders) =>
+        prevOrders.map((og) =>
+          og.items.includes(order)
+            ? {
+                ...og,
+                items: og.items.map((o) =>
+                  o.id === order.id ? { ...o, status: "preparation" } : o
+                ),
+              }
+            : og
+        )
+      );
+      updateOrderStatus(order.id, "preparation");
+    });
   };
 
-  const handleReject = (orderId) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: "rejected" } : order
-      )
-    );
-    updateOrderStatus(orderId, "rejected");
+  const handleReject = (orderGroup) => {
+    orderGroup.items.forEach((order) => {
+      setOrders((prevOrders) =>
+        prevOrders.map((og) =>
+          og.items.includes(order)
+            ? {
+                ...og,
+                items: og.items.map((o) =>
+                  o.id === order.id ? { ...o, status: "rejected" } : o
+                ),
+              }
+            : og
+        )
+      );
+      updateOrderStatus(order.id, "rejected");
+    });
   };
 
-  const handleComplete = (orderId) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: "completed" } : order
-      )
-    );
-    updateOrderStatus(orderId, "completed");
+  const handleComplete = (orderGroup) => {
+    orderGroup.items.forEach((order) => {
+      setOrders((prevOrders) =>
+        prevOrders.map((og) =>
+          og.items.includes(order)
+            ? {
+                ...og,
+                items: og.items.map((o) =>
+                  o.id === order.id ? { ...o, status: "completed" } : o
+                ),
+              }
+            : og
+        )
+      );
+      updateOrderStatus(order.id, "completed");
+    });
   };
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      const response = await fetch(`${BASE_URL}orders/${orderId}`, {
+      const response = await fetch(`${BASE_URL}/orders/${orderId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +164,12 @@ const OrderDashboard = () => {
   };
 
   const filteredOrders = orders.filter(
-    (order) => order.status.toLowerCase() === filter.toLowerCase()
+    (orderGroup) =>
+      orderGroup &&
+      orderGroup.items &&
+      orderGroup.items.some(
+        (order) => order.status.toLowerCase() === filter.toLowerCase()
+      )
   );
 
   return (
@@ -131,21 +190,39 @@ const OrderDashboard = () => {
       </div>
       <div className="order-list">
         {filteredOrders.length > 0 ? (
-          filteredOrders.map((order) => (
-            <div key={order.id} className="order-item">
-              <p>
-                {order.item} - ${order.price.toFixed(2)}
-              </p>
+          filteredOrders.map((orderGroup) => (
+            <div
+              key={`${orderGroup.table_id}-${orderGroup.customer_number}`}
+              className="order-card"
+            >
+              <div className="order-header">
+                <p>
+                  <strong>Table:</strong> {orderGroup.table_id},{" "}
+                  <strong>Customer:</strong> {orderGroup.customer_number} -{" "}
+                  <strong>Total:</strong> ${orderGroup.total.toFixed(2)}
+                </p>
+              </div>
+              <div className="order-items">
+                {orderGroup.items.map((order) => (
+                  <div key={order.id} className="order-item">
+                    <p>
+                      {order.item} - ${order.price.toFixed(2)}
+                    </p>
+                  </div>
+                ))}
+              </div>
               {filter === "pending" && (
                 <div className="button-group-inline">
-                  <button onClick={() => handleApprove(order.id)}>
+                  <button onClick={() => handleApprove(orderGroup)}>
                     Approve
                   </button>
-                  <button onClick={() => handleReject(order.id)}>Reject</button>
+                  <button onClick={() => handleReject(orderGroup)}>
+                    Reject
+                  </button>
                 </div>
               )}
               {filter === "preparation" && (
-                <button onClick={() => handleComplete(order.id)}>
+                <button onClick={() => handleComplete(orderGroup)}>
                   Ready to go
                 </button>
               )}

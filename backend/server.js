@@ -234,7 +234,7 @@ app.get("/verify-email", async (req, res) => {
   res.json({ message: "Email verified successfully" });
 });
 
-app.post("/login", async (req, res) => {
+app.post("login", async (req, res) => {
   const { email, password } = req.body;
   const { data: user, error } = await supabase
     .from("admin")

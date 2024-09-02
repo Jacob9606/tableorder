@@ -373,6 +373,7 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
 
 app.get("/items", async (req, res) => {
   const { admin_id } = req.query; // URL에서 admin_id 가져오기
+  console.log("Request received for /items with admin_id:", admin_id); // 로깅 추가
 
   try {
     const { data, error } = await supabase

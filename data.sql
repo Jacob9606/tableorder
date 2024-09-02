@@ -169,7 +169,6 @@ COPY "public"."admin" ("id", "email", "password", "shop_name", "phone_number", "
 --
 
 COPY "public"."items" ("id", "name", "price", "description", "image_url", "created_at", "category", "admin_id") FROM stdin;
-21	Tangsuyuk	49.00	Korean style sweet and sour pork	https://www.koreanbapsang.com/wp-content/uploads/2011/09/DSC_0113-e1541395731822.jpg	2024-08-10 01:32:11.166737+00	To Share	30
 22	Kimchi Udon Jeongol	49.00	Fermented kimchi, thick white noodles	https://i2.wp.com/seonkyounglongest.com/wp-content/uploads/2022/01/web3.jpg?fit=1482%2C2155&ssl=1	2024-08-10 01:33:24.789642+00	To Share	30
 23	Haemul-Tang	59.00	Spicy assorted seafood stew. 3 bowls of rice.	https://mealtones.com/cdn/shop/files/a7858775a7f04c3a21e9c0a3cc2b6f31.png?v=1687853328&width=1445	2024-08-10 01:34:19.681824+00	To Share	30
 24	Bulgogi Jeongol (small)	38.00	Slice marinated beef hot pot. 2 bowls of rice	https://mykoreankitchen.com/wp-content/uploads/2018/02/2.-Bulgogi-Stew.jpg	2024-08-10 01:36:27.602094+00	To Share	30
@@ -191,10 +190,19 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id", "admin_id") FROM stdin;
-Kimchi-Jjigae	19	Pending	178	2024-08-31 11:13:46.073	1234	1	30
-Dolsot Bibimbap	20	Pending	179	2024-08-31 11:13:46.073	1234	1	30
-Dolsot Bibimbap	20	Pending	180	2024-08-31 11:14:18.6	1234	2	29
-Dolsot Bibimbap	20	Pending	181	2024-08-31 11:29:46.521	1234	2	30
+Gonggi-Bap	3	rejected	236	2024-09-02 00:52:22.662	9815	1	30
+Kimchi-Jjigae	19	rejected	234	2024-09-02 00:51:50.174	9815	1	30
+Samgyetang	25	rejected	235	2024-09-02 00:52:00.253	9815	1	30
+Kimchi-Jjigae	19	completed	238	2024-09-02 01:04:55.507	950	1	30
+Samgyetang	25	completed	237	2024-09-02 01:04:55.507	950	1	30
+Kimchi-Jjigae	19	rejected	226	2024-09-02 00:29:49.135	4802	1	30
+Kimchi-Jjigae	19	rejected	229	2024-09-02 00:30:56.164	4802	1	30
+Samgyetang	25	rejected	227	2024-09-02 00:30:26.074	4802	1	30
+Kimchi-Jjigae	19	rejected	228	2024-09-02 00:30:38.358	4802	1	30
+Kimchi-Jjigae	19	rejected	230	2024-09-02 00:38:12.594	8047	1	30
+Samgyetang	25	rejected	231	2024-09-02 00:38:12.595	8047	1	30
+Kimchi-Jjigae	19	rejected	232	2024-09-02 00:43:51.801	8951	1	30
+Dolsot Bibimbap	20	rejected	233	2024-09-02 00:43:51.801	8951	1	30
 \.
 
 
@@ -293,7 +301,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 181, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 238, true);
 
 
 --

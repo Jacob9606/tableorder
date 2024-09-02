@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "cross-env PORT=3002 react-scripts start",
-    "build": "cross-env PUBLIC_URL=. react-scripts build",
+    "build": "cross-env PUBLIC_URL=. GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

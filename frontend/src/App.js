@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import MenuOrderPage from "./Customer/components/MenuOrderPage";
 import AdminLoginPage from "./Admin/components/AdminLoginPage";
@@ -16,6 +16,14 @@ import OrderConfirmation from "./Customer/components/OrderConfirmation";
 
 const App = () => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // 로그인 상태를 localStorage에서 확인하여 설정
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      setIsAdminLoggedIn(true);
+    }
+  }, []);
 
   const handleAdminLogin = () => {
     setIsAdminLoggedIn(true);

@@ -19,6 +19,8 @@ const OrderDashboard = () => {
         },
       });
 
+      console.log(response); // 응답 내용을 로그로 출력
+
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }

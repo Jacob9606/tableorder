@@ -12,21 +12,18 @@ const OrderDashboard = () => {
   // 주문 목록을 가져오는 함수
   const fetchOrders = async (adminId) => {
     try {
-      const response = await fetch(`${BASE_URL}orders?admin_id=${adminId}`, {
+      const response = await fetch(`${BASE_URL}/orders?admin_id=${adminId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      console.log(response); // 응답 내용을 로그로 출력
-
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
 
       const data = await response.json();
-      console.log("Fetched grouped orders data:", data);
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -44,11 +41,11 @@ const OrderDashboard = () => {
 
     fetchOrders(adminId);
 
-    let ws; // WebSocket 변수를 useEffect 외부에 선언합니다.
+    let ws;
 
     // 사운드 재생 함수
     const playSound = () => {
-      const audio = new Audio("/tableorder/notification.mp3"); // 공용 폴더의 notification.mp3 파일 경로
+      const audio = new Audio("/tableorder/notification.mp3");
       audio
         .play()
         .catch((error) => console.error("Audio playback failed:", error));
@@ -56,8 +53,7 @@ const OrderDashboard = () => {
 
     // WebSocket 설정
     const connectWebSocket = () => {
-      //ws = new WebSocket("ws://localhost:3000"); // 로컬 환경에서 WebSocket URL
-      ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com"); // heroku URL
+      ws = new WebSocket(process.env.REACT_APP_WS_URL || "ws://localhost:3000");
 
       ws.onopen = () => {
         console.log("WebSocket connection established");
@@ -68,8 +64,8 @@ const OrderDashboard = () => {
         console.log("Received WebSocket message:", message);
 
         if (message.type === "new_order") {
-          fetchOrders(adminId); // 새로운 주문이 있을 때 주문을 다시 가져옵니다.
-          playSound(); // 새로운 주문이 있을 때 사운드 재생
+          fetchOrders(adminId);
+          playSound();
         }
       };
 
@@ -83,7 +79,7 @@ const OrderDashboard = () => {
       };
     };
 
-    connectWebSocket(); // WebSocket 연결 시도
+    connectWebSocket();
 
     return () => {
       if (ws) {

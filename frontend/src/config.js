@@ -6,4 +6,4 @@ const createUrl = (path) => {
   return BASE_URL.endsWith("/") ? `${BASE_URL}${path}` : `${BASE_URL}/${path}`;
 };
 
-export { BASE_URL };
+export { BASE_URL, createUrl };

@@ -12,7 +12,7 @@ const OrderDashboard = () => {
   // 주문 목록을 가져오는 함수
   const fetchOrders = async (adminId) => {
     try {
-      const response = await fetch(`${BASE_URL}/orders?admin_id=${adminId}`, {
+      const response = await fetch(`${BASE_URL}orders?admin_id=${adminId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

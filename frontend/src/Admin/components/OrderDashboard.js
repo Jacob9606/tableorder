@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/OrderDashboard.css";
 import { BASE_URL } from "../../config";
+import { createUrl } from "../../config";
 
 const OrderDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -12,7 +13,7 @@ const OrderDashboard = () => {
   // 주문 목록을 가져오는 함수
   const fetchOrders = async (adminId) => {
     try {
-      const response = await fetch(`${BASE_URL}/orders?admin_id=${adminId}`, {
+      const response = await fetch(createUrl(`orders?admin_id=${adminId}`), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

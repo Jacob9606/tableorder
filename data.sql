@@ -288,7 +288,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 241, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 249, true);
 
 
 --

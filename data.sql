@@ -193,6 +193,9 @@ COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer
 Kimchi-Jjigae	19	Pending	250	2024-09-11 10:47:52.805	2294	1	30
 Samgyetang	25	Pending	251	2024-09-11 10:47:52.808	2294	1	30
 Kimchi Udon Jeongol	49	Pending	252	2024-09-11 10:47:52.808	2294	1	30
+Dolsot Bibimbap	20	Pending	253	2024-09-13 12:27:37.02	797	1	30
+Kimchi-Jjigae	19	Pending	254	2024-09-14 00:40:30.641	4055	1	30
+Dolsot Bibimbap	20	Pending	255	2024-09-14 00:40:30.644	4055	1	30
 \.
 
 
@@ -291,7 +294,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 252, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 255, true);
 
 
 --

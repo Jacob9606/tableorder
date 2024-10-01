@@ -44,7 +44,7 @@ const MenuOrderPage = () => {
     const fetchMenuItems = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/items?admin_id=${adminIdParam}`,
+          `${BASE_URL}/items?admin_id=${adminIdParam}`, // 백틱으로 감싸서 템플릿 리터럴로 수정
           {
             method: "GET",
             headers: {
@@ -116,7 +116,7 @@ const MenuOrderPage = () => {
 
     ws.onclose = (event) => {
       console.log(
-        `WebSocket closed: Code: ${event.code}, Reason: ${event.reason}`
+        `WebSocket closed: Code: ${event.code}, Reason: ${event.reason}` // 템플릿 리터럴 사용하여 수정
       );
     };
 

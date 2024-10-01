@@ -1,37 +1,37 @@
 .container {
-  padding: 0; /* 전체 공백 제거 */
+  padding: 0;
   font-family: "Roboto", sans-serif;
   background-color: #f7f9fa;
-  margin-top: -40px; /* 로고 위의 공백 줄이기 */
+  margin-top: -40px;
 }
 
 .header-container {
   display: flex;
-  justify-content: space-between; /* 로고와 테이블 번호를 양쪽 끝에 배치 */
-  align-items: center; /* 수직 가운데 정렬 */
-  padding: 10px 20px; /* 좌우 여백 추가 */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
   margin-bottom: 0;
 }
 
 .logo-container {
   display: flex;
-  justify-content: flex-start; /* 로고를 왼쪽에 고정 */
+  justify-content: flex-start;
 }
 
 .logo {
-  width: 150px; /* 로고 크기 조정 */
+  width: 150px;
   height: auto;
 }
 
 .tableNo {
-  font-size: 1.5rem; /* 글자 크기 */
+  font-size: 1.5rem;
   font-weight: bold;
   color: #2c3e50;
   margin: 0;
 }
 
 .title {
-  font-size: 1.5rem; /* 글자 크기 줄임 */
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
   color: #2c3e50;
@@ -42,38 +42,35 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  margin-top: -3.5rem; /* 위쪽 여백을 줄여서 로고와의 간격 줄이기 */
+  margin-top: -3.5rem;
   overflow-x: auto;
-  padding: 0.5rem; /* 카테고리 버튼 영역에 여백 추가 */
-  border-bottom: 1px solid #dcdcdc; /* 하단에 경계선 추가 */
-  justify-content: flex-start; /* 왼쪽 정렬 */
-  background-color: transparent; /* 배경색 제거 */
+  padding: 0.5rem;
+  border-bottom: 1px solid #dcdcdc;
+  justify-content: flex-start;
+  background-color: transparent;
 }
 
 .category-button {
-  padding: 0.5rem; /* 패딩 유지 */
-  font-size: 0.85rem; /* 글자 크기 줄임 */
-  border: 2px solid #3498db; /* 버튼 테두리 색상 */
-  background-color: #f7f9fa; /* 배경색을 배경과 맞추기 */
-  border-radius: 50%; /* 버튼을 동그랗게 만들기 */
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  border: 2px solid #3498db;
+  background-color: #f7f9fa;
+  border-radius: 50%;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .category-button.selected {
-  background-color: #3498db; /* 선택된 버튼 배경색 */
-  color: white; /* 선택된 버튼 글자색 */
+  background-color: #3498db;
+  color: white;
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(150px, 1fr)
-  ); /* 한 줄에 두 개의 카드 표시 */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
-  padding: 1rem; /* 메뉴 항목의 좌우 여백 추가 */
+  padding: 1rem;
 }
 
 .menu-item {
@@ -84,8 +81,8 @@
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  max-height: 300px; /* 카드 최대 높이 설정 */
-  overflow: hidden; /* 카드 내용이 잘리지 않도록 설정 */
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .menu-item:hover {
@@ -94,37 +91,37 @@
 
 .menu-item img {
   width: 100%;
-  height: 100px; /* 이미지 높이 줄임 */
+  height: 100px;
   object-fit: cover;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
 
 .menu-item-content {
-  padding: 0.5rem; /* 내부 패딩 줄임 */
+  padding: 0.5rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 세로 공간 조정 */
-  height: 100%; /* 부모의 높이를 채우도록 설정 */
+  justify-content: space-between;
+  height: 100%;
 }
 
 .menu-item-content h2 {
   font-weight: bold;
   color: #34495e;
-  font-size: 1rem; /* 글자 크기 줄임 */
+  font-size: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .menu-item-content p {
   color: #2ecc71;
   font-weight: bold;
-  font-size: 0.85rem; /* 글자 크기 줄임 */
+  font-size: 0.85rem;
   margin-bottom: 0.5rem;
 }
 
 .menu-item-content h3 {
-  font-size: 0.8rem; /* 추가된 설명의 글자 크기 줄임 */
+  font-size: 0.8rem;
   margin-bottom: 0.5rem;
   color: #7f8c8d;
 }
@@ -138,8 +135,8 @@
   border-radius: 0.25rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 0.9rem; /* 버튼 글자 크기 줄임 */
-  margin-top: auto; /* 버튼을 카드 하단으로 배치 */
+  font-size: 0.9rem;
+  margin-top: auto;
 }
 
 .menu-item-content button:hover {
@@ -167,9 +164,27 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 1rem; /* 버튼 글자 크기 줄임 */
+  font-size: 1rem;
 }
 
 .cart-button:hover {
   background-color: #27ae60;
+}
+
+/* 직원 호출 버튼 스타일 */
+.call-staff-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.call-staff-button:hover {
+  background-color: #c0392b;
 }

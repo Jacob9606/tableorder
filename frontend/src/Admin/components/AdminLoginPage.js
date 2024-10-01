@@ -18,7 +18,7 @@ const AdminLoginPage = ({ onLogin }) => {
     };
 
     try {
-      const response = await fetch(`${BASE_URL}login`, {
+      const response = await fetch(`${BASE_URL}/login`, {
         // 로컬로 할때는{BASE_URL} 뒤에 / 넣기
         method: "POST",
         headers: {

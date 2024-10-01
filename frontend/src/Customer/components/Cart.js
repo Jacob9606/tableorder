@@ -39,7 +39,8 @@ const Cart = ({
     console.log("Placing order with table_id:", tableId);
 
     try {
-      const response = await fetch(`${BASE_URL}cart`, {
+      const response = await fetch(`${BASE_URL}/cart`, {
+        // localhost로 할때는 {BASE_URL} 뒤에 / 넣기
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,11 +13,12 @@ const Profile = ({ onLogout }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const token = localStorage.getItem("authToken");
         const response = await fetch(`${BASE_URL}/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // 인증 헤더 추가
+            Authorization: `Bearer ${token}`,
           },
         });
 

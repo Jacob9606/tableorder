@@ -54,7 +54,7 @@ const OrderDashboard = () => {
 
     // WebSocket 설정
     const connectWebSocket = () => {
-      ws = new WebSocket(process.env.REACT_APP_WS_URL || "ws://localhost:3000");
+      ws = new WebSocket("ws://localhost:3000");
 
       ws.onopen = () => {
         console.log("WebSocket connection established");
@@ -66,6 +66,12 @@ const OrderDashboard = () => {
 
         if (message.type === "new_order") {
           fetchOrders(adminId);
+          playSound();
+        }
+
+        // 직원 호출 메시지를 수신하면 알림 소리와 메시지를 띄움
+        if (message.type === "call_staff") {
+          alert(`Table ${message.table_id} is calling for assistance!`);
           playSound();
         }
       };

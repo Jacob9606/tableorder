@@ -15,7 +15,7 @@ const MenuOrderPage = () => {
   const [menuItems, setMenuItems] = useState([]);
   const location = useLocation();
   const [tableId, setTableId] = useState(null);
-  const [adminId, setAdminId] = useState(null); // adminId 상태 추가
+  const [adminId, setAdminId] = useState(null);
 
   // generateCustomerNumber 함수를 useState보다 위로 이동
   const generateCustomerNumber = () => {
@@ -32,9 +32,9 @@ const MenuOrderPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const tableIdParam = params.get("table_id");
-    const adminIdParam = params.get("admin_id"); // admin_id 가져오기
+    const adminIdParam = params.get("admin_id");
     setTableId(tableIdParam);
-    setAdminId(adminIdParam); // adminId 설정
+    setAdminId(adminIdParam);
 
     if (!tableIdParam) {
       console.warn("Missing table_id in URL parameters.");
@@ -44,7 +44,7 @@ const MenuOrderPage = () => {
     const fetchMenuItems = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}items?admin_id=${adminIdParam}`, // 로컬로 할때는 /추가하기.
+          `${BASE_URL}/items?admin_id=${adminIdParam}`,
           {
             method: "GET",
             headers: {
@@ -94,6 +94,37 @@ const MenuOrderPage = () => {
     setViewingCart(false);
   };
 
+  // 직원 호출 버튼 클릭 시 WebSocket을 통해 서버로 호출 메시지 전송
+  const callStaff = () => {
+    const ws = new WebSocket("ws://localhost:3000");
+
+    ws.onopen = () => {
+      console.log(
+        "WebSocket connection established, sending call_staff message"
+      );
+      ws.send(
+        JSON.stringify({
+          type: "call_staff",
+          table_id: tableId,
+        })
+      );
+    };
+
+    ws.onmessage = (event) => {
+      console.log("Message from server:", event.data);
+    };
+
+    ws.onclose = (event) => {
+      console.log(
+        `WebSocket closed: Code: ${event.code}, Reason: ${event.reason}`
+      );
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+  };
+
   if (viewingCart) {
     return (
       <Cart
@@ -103,7 +134,7 @@ const MenuOrderPage = () => {
         setCart={setCart}
         tableId={tableId}
         customerNumber={customerNumber}
-        adminId={adminId} // Cart 컴포넌트에 adminId 전달
+        adminId={adminId}
       />
     );
   }
@@ -139,6 +170,10 @@ const MenuOrderPage = () => {
       {cart.length > 0 && (
         <CartButton cartLength={cart.length} onClick={navigateToCart} />
       )}
+      {/* 직원 호출 버튼 추가 */}
+      <button onClick={callStaff} className="call-staff-button">
+        Call Employee
+      </button>
     </div>
   );
 };

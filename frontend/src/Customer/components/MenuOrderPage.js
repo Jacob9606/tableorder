@@ -126,7 +126,7 @@ const MenuOrderPage = () => {
       <div className="logo-container">
         <img src={servemelogo} alt="Serve Me Logo" className="logo" />
       </div>
-      {/* <h1 className="title">Menu</h1> */}
+      <h1 className="title">Hanok</h1>
       <h1 className="tableNo">{tableNo}</h1>
       <div className="category-buttons">
         {uniqueCategories.map((category) => (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OrderConfirmation from "./OrderConfirmation"; // 주문 확인 컴포넌트 임포트
 import "../styles/Cart.css";
+import GooglePayButton from '@google-pay/button-react'
 import { BASE_URL } from "../../config";
 
 const Cart = ({ removeFromCart, navigateToMenu }) => {
@@ -72,9 +73,47 @@ const Cart = ({ removeFromCart, navigateToMenu }) => {
           <div className="cart-total">
             <h2>Total: ${calculateTotal()}</h2>
           </div>
-          <button onClick={placeOrder} className="order-button">
+          {/* <button onClick={placeOrder} className="order-button">
             Place Order
-          </button>
+          </button> */}
+          <GooglePayButton
+            environment="PRODUCTION"
+            buttonType="pay"
+            paymentRequest={{
+              apiVersion: 2,
+              apiVersionMinor: 0,
+              allowedPaymentMethods: [
+                {
+                  type: 'CARD',
+                  parameters: {
+                    allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                    allowedCardNetworks: ['MASTERCARD', 'VISA'],
+                  },
+                  tokenizationSpecification: {
+                    type: 'PAYMENT_GATEWAY',
+                    parameters: {
+                      gateway: 'example',
+                      gatewayMerchantId: 'exampleGatewayMerchantId',
+                    },
+                  },
+                },
+              ],
+              merchantInfo: {
+                merchantId: 'BCR2DN4T6OPLHYTB',
+                merchantName: 'Serve Me',
+              },
+              transactionInfo: {
+                totalPriceStatus: 'FINAL',
+                totalPriceLabel: 'Total',
+                totalPrice: calculateTotal(),
+                currencyCode: 'AUD',
+                countryCode: 'AU',
+              },
+            }}
+            onLoadPaymentData={paymentRequest => {
+              console.log('load payment data', paymentRequest);
+            }}
+          />
         </div>
       )}
       <button onClick={navigateToMenu} className="back-to-menu-button">

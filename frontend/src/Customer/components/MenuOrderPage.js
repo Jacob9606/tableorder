@@ -44,7 +44,7 @@ const MenuOrderPage = () => {
     const fetchMenuItems = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/items?admin_id=${adminIdParam}`, // 백틱으로 감싸서 템플릿 리터럴로 수정
+          `${BASE_URL}/items?admin_id=${adminIdParam}`,
           {
             method: "GET",
             headers: {

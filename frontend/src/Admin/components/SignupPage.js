@@ -30,7 +30,7 @@ const SignupPage = () => {
 
     try {
       console.log("Sending request to:", `${BASE_URL}signup`);
-      const response = await fetch(`${BASE_URL}signup`, {
+      const response = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

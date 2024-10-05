@@ -4,7 +4,8 @@ const WebSocketClient = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001");
+    // const ws = new WebSocket("ws://localhost:3001");
+    const ws = new WebSocket("wss://serve-me-70c148e5be60.herokuapp.com");
 
     ws.onopen = () => {
       console.log("WebSocket connection established");

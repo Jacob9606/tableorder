@@ -34,7 +34,7 @@ const UpdateItem = () => {
     }
 
     try {
-      const response = await fetch(`${BASE_URL}items/${id}`, {
+      const response = await fetch(`${BASE_URL}/items/${id}`, {
         method: "PUT",
         body: formData,
       });

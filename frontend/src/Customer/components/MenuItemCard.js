@@ -10,6 +10,7 @@ const MenuItemCard = ({ item, addToCart }) => (
     <div className="menu-item-content">
       <h2>{item.name}</h2>
       <p>${item.price.toFixed(2)}</p>
+      <h3>{item.description}</h3>
       <button onClick={() => addToCart(item)}>Add to Cart</button>
     </div>
   </div>

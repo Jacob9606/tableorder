@@ -6,39 +6,69 @@ import Cart from "./Cart";
 import "../styles/MenuOrderPage.css";
 import servemelogo from "../../servemelogo.png";
 import { BASE_URL } from "../../config";
+import { useLocation } from "react-router-dom";
 
 const MenuOrderPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main");
   const [cart, setCart] = useState([]);
   const [viewingCart, setViewingCart] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
+  const location = useLocation();
+  const [tableId, setTableId] = useState(null);
+  const [adminId, setAdminId] = useState(null);
+
+  // generateCustomerNumber 함수를 useState보다 위로 이동
+  const generateCustomerNumber = () => {
+    const newCustomerNumber = Math.floor(Math.random() * 10000);
+    localStorage.setItem("customer_number", newCustomerNumber);
+    return newCustomerNumber;
+  };
+
+  const [customerNumber, setCustomerNumber] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get("customer_number") || generateCustomerNumber();
+  });
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tableIdParam = params.get("table_id");
+    const adminIdParam = params.get("admin_id");
+    setTableId(tableIdParam);
+    setAdminId(adminIdParam);
+
+    if (!tableIdParam) {
+      console.warn("Missing table_id in URL parameters.");
+      return;
+    }
+
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${BASE_URL}items`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${BASE_URL}/items?admin_id=${adminIdParam}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch items");
         }
 
         const data = await response.json();
-        console.log("Fetched items:", data);
         setMenuItems(data);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
     };
+
     fetchMenuItems();
 
     const storedCart = JSON.parse(localStorage.getItem("items")) || [];
     setCart(storedCart);
-  }, []);
+  }, [location]);
 
   const addToCart = (item) => {
     setCart((prevCart) => {
@@ -64,45 +94,47 @@ const MenuOrderPage = () => {
     setViewingCart(false);
   };
 
-  const placeOrder = async () => {
-    const items = cart;
-    console.log("Placing order:", items);
+  // 직원 호출 버튼 클릭 시 WebSocket을 통해 서버로 호출 메시지 전송
+  const callStaff = () => {
+    const ws = new WebSocket("ws://localhost:3000");
 
-    try {
-      const response = await fetch(`${BASE_URL}cart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(items),
-      });
+    ws.onopen = () => {
+      console.log(
+        "WebSocket connection established, sending call_staff message"
+      );
+      ws.send(
+        JSON.stringify({
+          type: "call_staff",
+          table_id: tableId,
+        })
+      );
+    };
 
-      if (!response.ok) {
-        throw new Error("Failed to place order");
-      }
+    ws.onmessage = (event) => {
+      console.log("Message from server:", event.data);
+    };
 
-      setViewingCart(false);
-      localStorage.removeItem("items");
-      setCart([]);
+    ws.onclose = (event) => {
+      console.log(
+        `WebSocket closed: Code: ${event.code}, Reason: ${event.reason}` // 템플릿 리터럴 사용하여 수정
+      );
+    };
 
-      console.log("Order placed successfully");
-    } catch (error) {
-      console.error("Error placing order:", error);
-    }
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
   };
-
-  function isCart({ length }) {
-    if (length > 0) {
-      return <CartButton cartLength={cart.length} onClick={navigateToCart} />;
-    }
-  }
 
   if (viewingCart) {
     return (
       <Cart
         removeFromCart={removeFromCart}
         navigateToMenu={navigateToMenu}
-        placeOrder={placeOrder}
+        setViewingCart={setViewingCart}
+        setCart={setCart}
+        tableId={tableId}
+        customerNumber={customerNumber}
+        adminId={adminId}
       />
     );
   }
@@ -114,10 +146,12 @@ const MenuOrderPage = () => {
 
   return (
     <div className="container">
-      <div className="logo-container">
-        <img src={servemelogo} alt="Serve Me Logo" className="logo" />
+      <div className="header-container">
+        <div className="logo-container">
+          <img src={servemelogo} alt="Serve Me Logo" className="logo" />
+        </div>
+        <h1 className="table-id">Table: {tableId}</h1>
       </div>
-      <h1 className="title">Menu</h1>
       <div className="category-buttons">
         {uniqueCategories.map((category) => (
           <CategoryButton
@@ -133,7 +167,13 @@ const MenuOrderPage = () => {
           <MenuItemCard key={item.id} item={item} addToCart={addToCart} />
         ))}
       </div>
-      {isCart({ length: cart.length })}
+      {cart.length > 0 && (
+        <CartButton cartLength={cart.length} onClick={navigateToCart} />
+      )}
+      {/* 직원 호출 버튼 추가 */}
+      <button onClick={callStaff} className="call-staff-button">
+        Call Employee
+      </button>
     </div>
   );
 };

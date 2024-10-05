@@ -1,24 +1,39 @@
 .container {
-  padding: 1rem;
+  padding: 0;
   font-family: "Roboto", sans-serif;
   background-color: #f7f9fa;
+  margin-top: -40px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin-bottom: 0;
 }
 
 .logo-container {
   display: flex;
-  justify-content: center;
-  margin-bottom: -8rem;
+  justify-content: flex-start;
 }
 
 .logo {
-  width: 300px; /* 로고 크기 조정 */
+  width: 150px;
   height: auto;
 }
 
-.title {
-  font-size: 2rem;
+.tableNo {
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
   color: #2c3e50;
   text-align: center;
 }
@@ -27,28 +42,35 @@
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  margin-top: -3.5rem;
   overflow-x: auto;
+  padding: 0.5rem;
+  border-bottom: 1px solid #dcdcdc;
+  justify-content: flex-start;
+  background-color: transparent;
 }
 
 .category-button {
-  padding: 0.5rem 1rem;
-  border: 1px solid gray;
-  background-color: white;
-  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  border: 2px solid #3498db;
+  background-color: #f7f9fa;
+  border-radius: 50%;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .category-button.selected {
-  border: 2px solid #3498db;
-  background-color: #ecf0f1;
+  background-color: #3498db;
+  color: white;
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
+  padding: 1rem;
 }
 
 .menu-item {
@@ -59,6 +81,8 @@
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .menu-item:hover {
@@ -67,24 +91,39 @@
 
 .menu-item img {
   width: 100%;
-  height: 200px;
+  height: 100px;
   object-fit: cover;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
 }
 
 .menu-item-content {
-  padding: 1rem;
+  padding: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .menu-item-content h2 {
   font-weight: bold;
   color: #34495e;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .menu-item-content p {
   color: #2ecc71;
   font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.menu-item-content h3 {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: #7f8c8d;
 }
 
 .menu-item-content button {
@@ -94,9 +133,10 @@
   color: white;
   border: none;
   border-radius: 0.25rem;
-  margin-top: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  margin-top: auto;
 }
 
 .menu-item-content button:hover {
@@ -124,8 +164,27 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem;
 }
 
 .cart-button:hover {
   background-color: #27ae60;
+}
+
+/* 직원 호출 버튼 스타일 */
+.call-staff-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.call-staff-button:hover {
+  background-color: #c0392b;
 }

@@ -11,7 +11,7 @@ const ManageMenu = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${BASE_URL}items`, {
+        const response = await fetch(`${BASE_URL}/items`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -81,6 +81,7 @@ const ManageMenu = () => {
               <p>
                 {item.name} - ${item.price.toFixed(2)}
               </p>
+              <p>{item.category}</p>
               <p>{item.description}</p>
               <button
                 className="update-button"

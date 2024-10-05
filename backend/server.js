@@ -27,19 +27,114 @@ const server = http.createServer(app); // HTTP 서버 생성
 // WebSocket 설정 추가
 const wss = new WebSocket.Server({ server }); // HTTP 서버에 WebSocket 연결
 
+console.log(`HTTP server is running on port ${port}`);
+console.log(`WebSocket server is running on port ${port}`);
+
+let interval; // interval 변수를 상단에서 선언합니다.
+
 // WebSocket 이벤트 처리
 wss.on("connection", function connection(ws) {
   console.log("A new client connected");
+
+  ws.isAlive = true;
+  ws.on("pong", () => {
+    ws.isAlive = true; // 클라이언트가 살아 있음을 확인합니다.
+  });
+
   ws.on("message", function incoming(message) {
     console.log("received: %s", message);
-    ws.send(`Echo: ${message}`);
+
+    const parsedMessage = JSON.parse(message);
+
+    if (parsedMessage.type === "call_staff") {
+      console.log(
+        `Table ${parsedMessage.table_id} is calling for staff assistance.`
+      );
+      // 필요한 로직을 여기에 추가
+    }
   });
 
-  ws.on("close", () => {
-    console.log("Client disconnected");
+  ws.on("close", (code, reason) => {
+    console.log(
+      `Client disconnected. Close code: ${code}, Reason: ${
+        reason || "No reason provided"
+      }`
+    );
   });
 
-  ws.send(JSON.stringify({ message: "Welcome to the WebSocket server!" }));
+  ws.on("error", (error) => {
+    console.error("WebSocket error:", error);
+  });
+});
+
+// Ping/pong 타임아웃 설정
+interval = setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (ws.isAlive === false) {
+      console.log("Terminating client due to lack of pong response");
+      return ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.ping(); // 서버에서 클라이언트로 핑을 보냅니다.
+  });
+}, 30000);
+
+wss.on("close", function close() {
+  clearInterval(interval);
+});
+
+// 주문이 추가되었을 때 WebSocket을 통해 클라이언트에게 알림
+function broadcastNewOrder(orderData) {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ type: "new_order", data: orderData }));
+    }
+  });
+}
+
+// 직원 호출 시 WebSocket으로 알림 브로드캐스트
+function broadcastCallStaff(tableId) {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ type: "call_staff", table_id: tableId }));
+    }
+  });
+}
+
+// 메시지 수신 처리
+wss.on("connection", function connection(ws) {
+  console.log("A new client connected");
+
+  ws.isAlive = true;
+  ws.on("pong", () => {
+    ws.isAlive = true; // 클라이언트가 살아 있음을 확인합니다.
+  });
+
+  ws.on("message", function incoming(message) {
+    console.log("received: %s", message);
+
+    const parsedMessage = JSON.parse(message);
+
+    if (parsedMessage.type === "call_staff") {
+      console.log(
+        `Table ${parsedMessage.table_id} is calling for staff assistance.`
+      );
+      broadcastCallStaff(parsedMessage.table_id); // 메시지를 관리자로 전달
+    }
+  });
+
+  ws.on("close", (code, reason) => {
+    console.log(
+      `Client disconnected. Close code: ${code}, Reason: ${
+        reason || "No reason provided"
+      }`
+    );
+  });
+
+  ws.on("error", (error) => {
+    console.error("WebSocket error:", error);
+  });
 });
 
 // CORS 설정 추가
@@ -50,6 +145,7 @@ const whitelist = [
   "https://jacob9606.github.io",
   "https://serve-me-70c148e5be60.herokuapp.com", // Heroku app domain
 ];
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -79,6 +175,22 @@ const transporter = nodemailer.createTransport({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 1. 정적 파일 제공 설정
+app.use(express.static(path.join(__dirname, "public")));
+
+// 프론트엔드 빌드 파일 제공 설정
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+
+app.use(
+  "/tableorder",
+  express.static(path.join(__dirname, "..", "frontend", "public"))
+);
+
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  next();
+});
 
 app.post("/signup", async (req, res) => {
   console.log("Request Body:", req.body);
@@ -128,6 +240,7 @@ app.post("/signup", async (req, res) => {
 
     const emailToken = jwt.sign({ email }, jwtSecret, { expiresIn: "1h" });
     const emailVerificationUrl = `https://serve-me-70c148e5be60.herokuapp.com/verify-email?token=${emailToken}`;
+    //const emailVerificationUrl = `http://localhost:${port}/verify-email?token=${emailToken}`;
 
     const mailOptions = {
       from: emailUser,
@@ -203,7 +316,11 @@ app.post("/login", async (req, res) => {
   const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, {
     expiresIn: "1h",
   });
-  res.json({ token });
+
+  // 응답 데이터 디버깅 로그 추가
+  console.log("Login successful:", { token, admin_id: user.id });
+
+  res.json({ token, admin_id: user.id });
 });
 
 app.post("/forgot-password", async (req, res) => {
@@ -264,7 +381,7 @@ app.post("/reset-password", async (req, res) => {
 });
 
 app.post("/add-item", upload.single("image"), async (req, res) => {
-  const { name, price, description } = req.body;
+  const { name, price, description, category } = req.body;
   const image = req.file;
 
   console.log("Request Body:", req.body);
@@ -296,6 +413,7 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
           price,
           description,
           image_url: imageUrl,
+          category,
         },
       ]);
 
@@ -312,10 +430,14 @@ app.post("/add-item", upload.single("image"), async (req, res) => {
 });
 
 app.get("/items", async (req, res) => {
+  const { admin_id } = req.query; // URL에서 admin_id 가져오기
+  console.log("Request received for /items with admin_id:", admin_id); // 로깅 추가
+
   try {
     const { data, error } = await supabase
       .from("items")
-      .select("id, name, price, description, image_url, category");
+      .select("id, name, price, description, image_url, category")
+      .eq("admin_id", admin_id); // admin_id에 따라 필터링
     if (error) {
       console.error("Supabase Error:", error);
       return res.status(400).json({ error: error.message });
@@ -455,51 +577,73 @@ app.put("/profile", async (req, res) => {
 });
 
 // make order
-// 주문이 추가되었을 때 WebSocket을 통해 클라이언트에게 알림
 app.post("/cart", async (req, res) => {
   const items = req.body;
-  console.log("Received items:", items); // items가 서버로 전달되었는지 확인
 
-  console.log(items);
-  const { data, error } = await supabase.from("orders").insert(
-    items.map((item) => ({
-      item: item.name,
-      price: item.price,
-      status: "pending",
-    }))
-  );
+  console.log("Received order items:", items);
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
+  if (!items.every((item) => item.table_id)) {
+    return res
+      .status(400)
+      .json({ error: "Table ID is required for each item." });
   }
 
-  console.log("Inserted order data:", data); // 데이터베이스에 정상적으로 삽입되었는지 확인
+  try {
+    const { data, error } = await supabase.from("orders").insert(items);
 
-  // 새 주문이 들어왔을 때 WebSocket을 통해 클라이언트에게 전송
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      console.log("Sending WebSocket message with data:", data); // WebSocket을 통해 전송되는 데이터 확인
-      client.send(JSON.stringify({ type: "new_order", data }));
+    if (error) {
+      console.error("Error inserting orders:", error);
+      return res.status(500).json({ error: error.message });
     }
-  });
 
-  res.status(200).json({ data });
+    broadcastNewOrder(data); // WebSocket을 통해 새 주문을 브로드캐스트합니다.
+
+    res.status(200).json({ data });
+  } catch (error) {
+    console.error("Error processing order:", error);
+    res.status(500).json({ error: "Failed to process order." });
+  }
 });
 
 //Get Orders
 app.get("/orders", async (req, res) => {
+  const { admin_id } = req.query;
+
   try {
+    // 특정 admin_id에 해당하는 모든 주문을 가져옵니다.
     const { data, error } = await supabase
       .from("orders")
-      .select("id, item, price, status, created_at");
+      .select("id, item, price, status, created_at, customer_number, table_id")
+      .eq("admin_id", admin_id);
 
     if (error) {
       console.error("Error fetching orders from database:", error);
       return res.status(400).json({ error: error.message });
     }
 
-    console.log("Orders fetched from database:", data);
-    res.status(200).json(data);
+    if (data.length === 0) {
+      console.warn(`No orders found for admin_id ${admin_id}.`);
+      return res.status(404).json({ error: "No orders found" });
+    }
+
+    // table_id와 customer_number를 기준으로 주문을 그룹화합니다.
+    const groupedOrders = data.reduce((acc, order) => {
+      const key = `${order.table_id}-${order.customer_number}`;
+      if (!acc[key]) {
+        acc[key] = {
+          table_id: order.table_id,
+          customer_number: order.customer_number,
+          total: 0,
+          items: [],
+        };
+      }
+      acc[key].items.push(order);
+      acc[key].total += order.price;
+      return acc;
+    }, {});
+
+    // 객체를 배열로 변환하여 반환합니다.
+    res.status(200).json(Object.values(groupedOrders));
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({ error: "Failed to fetch orders" });
@@ -512,30 +656,46 @@ app.put("/orders/:id", async (req, res) => {
   const { status } = req.body;
 
   try {
+    // 상태 업데이트 및 업데이트된 결과를 다시 조회
     const { data, error } = await supabase
       .from("orders")
       .update({ status })
-      .eq("id", id);
+      .eq("id", id)
+      .select(); // 업데이트된 데이터를 반환
 
     if (error) {
       console.error("Error updating order status in database:", error);
       return res.status(400).json({ error: error.message });
     }
 
+    if (data.length === 0) {
+      console.warn(`Order with id ${id} not found.`);
+      return res.status(404).json({ error: "Order not found" });
+    }
+
     console.log("Order status updated:", data);
-    res.status(200).json({ message: "Order status updated successfully" });
+    res
+      .status(200)
+      .json({ message: "Order status updated successfully", data });
   } catch (error) {
     console.error("Error updating order status:", error);
     res.status(500).json({ error: "Failed to update order status" });
   }
 });
 
-// 프론트엔드 빌드 파일 제공 설정
-app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
-
-// 나머지 모든 요청은 React 앱이 처리하도록 설정
+// 2. 정적 파일을 먼저 처리하고 나머지 모든 요청은 React 앱으로 리디렉션
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+  if (req.path.includes(".") && req.path.split(".").pop().length > 0) {
+    const filePath = path.join(__dirname, "public", req.path);
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error(`File not found: ${filePath}`);
+        res.status(404).send("File not found");
+      }
+    });
+  } else {
+    res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+  }
 });
 
 server.listen(port, () => {

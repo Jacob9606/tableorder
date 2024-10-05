@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import OrderConfirmation from "./OrderConfirmation"; // 주문 확인 컴포넌트 임포트
+import OrderConfirmation from "./OrderConfirmation";
 import "../styles/Cart.css";
 import { BASE_URL } from "../../config";
 
-const Cart = ({ removeFromCart, navigateToMenu }) => {
-  const [orderPlaced, setOrderPlaced] = useState(false); // 주문 완료 여부 상태
+const Cart = ({
+  removeFromCart,
+  navigateToMenu,
+  setViewingCart,
+  setCart,
+  tableId,
+  adminId,
+  customerNumber, // customerNumber 추가
+}) => {
+  const [orderPlaced, setOrderPlaced] = useState(false);
   const cart = JSON.parse(localStorage.getItem("items")) || [];
 
   const calculateTotal = () => {
@@ -12,17 +20,38 @@ const Cart = ({ removeFromCart, navigateToMenu }) => {
   };
 
   const placeOrder = async () => {
+    if (!tableId) {
+      console.error("Table number is missing");
+      alert("Table number is missing. Cannot place the order.");
+      return;
+    }
+
+    const cartWithTableNo = cart.map((item) => ({
+      item: item.name,
+      price: item.price,
+      table_id: tableId,
+      admin_id: adminId,
+      customer_number: customerNumber, // customer_number 추가
+      status: "Pending",
+      created_at: new Date().toISOString(),
+    }));
+
+    console.log("Placing order with table_id:", tableId);
+
     try {
-      const response = await fetch(`${BASE_URL}cart`, {
+      const response = await fetch(`${BASE_URL}/cart`, {
+        // localhost로 할때는 {BASE_URL} 뒤에 / 넣기
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cart),
+        body: JSON.stringify(cartWithTableNo),
       });
 
       if (response.ok) {
-        setOrderPlaced(true); // 주문 완료 상태 설정
+        setOrderPlaced(true);
+        localStorage.removeItem("items");
+        setCart([]);
       } else {
         const data = await response.json();
         throw new Error(data.error);
@@ -50,8 +79,8 @@ const Cart = ({ removeFromCart, navigateToMenu }) => {
         <p className="cart-empty">Your cart is empty.</p>
       ) : (
         <div className="cart-items">
-          {cart.map((item) => (
-            <div key={item.id} className="cart-item">
+          {cart.map((item, index) => (
+            <div key={`${item.id}-${index}`} className="cart-item">
               <img
                 src={item.image_url}
                 alt={item.name}

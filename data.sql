@@ -190,15 +190,16 @@ COPY "public"."items" ("id", "name", "price", "description", "image_url", "creat
 --
 
 COPY "public"."orders" ("item", "price", "status", "id", "created_at", "customer_number", "table_id", "admin_id") FROM stdin;
-Dolsot Bibimbap	20	Pending	276	2024-09-29 02:17:44.231	5122	5	30
-Dolsot Bibimbap	20	Pending	277	2024-10-01 10:06:49.147	9397	1	30
-Kimchi-Jjigae	19	Pending	278	2024-10-01 10:06:49.147	9397	1	30
-Samgyetang	25	Pending	279	2024-10-01 10:25:41.83	8346	2	30
-Kimchi-Jjigae	19	Pending	280	2024-10-01 10:29:31.69	8346	2	30
-Kimchi-Jjigae	19	Pending	281	2024-10-01 10:43:18.648	8432	1	30
 Kimchi-Jjigae	19	preparation	273	2024-09-27 06:17:33.643	277	1	30
 Kimchi Udon Jeongol	49	preparation	274	2024-09-29 02:17:20.322	2296	1	30
 Haemul-Tang	59	preparation	275	2024-09-29 02:17:20.325	2296	1	30
+Dolsot Bibimbap	20	preparation	276	2024-09-29 02:17:44.231	5122	5	30
+Kimchi-Jjigae	19	preparation	278	2024-10-01 10:06:49.147	9397	1	30
+Dolsot Bibimbap	20	preparation	277	2024-10-01 10:06:49.147	9397	1	30
+Kimchi-Jjigae	19	preparation	280	2024-10-01 10:29:31.69	8346	2	30
+Samgyetang	25	preparation	279	2024-10-01 10:25:41.83	8346	2	30
+Kimchi-Jjigae	19	preparation	281	2024-10-01 10:43:18.648	8432	1	30
+Kimchi-Jjigae	19	preparation	282	2024-10-07 11:12:08.447	6186	1	30
 \.
 
 
@@ -297,7 +298,7 @@ SELECT pg_catalog.setval('"public"."items_id_seq"', 37, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."orders_id_seq"', 281, true);
+SELECT pg_catalog.setval('"public"."orders_id_seq"', 282, true);
 
 
 --
